@@ -9,8 +9,8 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 2.22 $"][[2]], " (",
-  StringSplit["$Date: 2023-01-24 19:48:11+09 $"][[2]], ") ",
+  StringSplit["$Revision: 2.24 $"][[2]], " (",
+  StringSplit["$Date: 2023-01-24 22:27:26+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
@@ -147,6 +147,11 @@ ZXLinks[expr_] := Union @ ReplaceAll[
 
 ZXSpiders::usage = "ZXSpiders[expr] returns the association of all Z and X spiders in ZX expression expr."
 
+ZXSpiders[ZXObject[assc_Association, ___?OptionQ]] := assc["Spiders"]
+
+ZXSpiders[objs:{ZXObject[_Association, ___?OptionQ]...}] :=
+  Merge[Map[ZXSpiders, objs], First]
+
 ZXSpiders[expr_] := Module[
   { spiders },
   spiders = Merge[
@@ -156,15 +161,15 @@ ZXSpiders[expr_] := Module[
     Identity
    ];
   checkSpiders[spiders];
-  KeySort @ Map[First, spiders]
+  KeySort @ Map[First, spiders /. {} -> {0}]
  ]
 
-checkSpiders[spiders_Association] := With[
-  { new = Select[spiders, Length[Union @ #] > 1 &] },
-  If[ Length[new] > 0,
-    Message[ZXDiagram::dup, Normal @ new]
-   ];
-  new
+checkSpiders[spiders_Association] := Module[
+  { new },
+  new = Select[Union /@ spiders, (Length[#] < 1)&];
+  If[Length[new] > 0, Message[ZXDiagram::none, Normal @ new]];
+  new = Select[Union /@ spiders, (Length[#] > 1)&];
+  If[Length[new] > 0, Message[ZXDiagram::many, Normal @ new]];
  ]
 
 
@@ -196,7 +201,9 @@ checkHadamards[g_Graph][hh_List] := Module[
 
 ZXDiagram::usage = "ZXDiagram[{spec}] constructs the ZX diagram and stores it as ZXObject."
 
-ZXDiagram::dup = "Different phase values for the same spiders: ``. The first value is taken for each spider."
+ZXDiagram::none = "No phase value for some spiders: ``. Zero is assumed."
+
+ZXDiagram::many = "Different phase values for the same spiders: ``. The first value is taken for each spider."
 
 ZXDiagram::hadamard = "Wrong arities for some Hadamard gates: ``. Every Hadamard gate should have one and only one input and output link."
 
@@ -205,7 +212,9 @@ ZXDiagram[spec__, opts___?OptionQ] := Module[
   rest = Cases[Flatten @ {spec}, _ZXObject];
   data = DeleteCases[Flatten @ {spec}, _ZXObject];
   data = Association[
-    "Spiders" -> ZXSpiders @ {data /. Rule -> List},
+    "Spiders" -> ZXSpiders @ Join[
+      KeyValueMap[#1[#2]&, ZXSpiders @ rest],
+      data /. Rule -> List ],
     "Hadamards" -> Hadamards @ {data /. Rule -> List},
     "Diamonds" -> Diamonds @ {data /. Rule -> List},
     "Links" -> ZXLinks[data]
