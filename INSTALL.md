@@ -30,17 +30,7 @@ Note that along with MaZX, it also installs the main application Q3 for your con
 
 ## Update
 
-At the momoment, the contents of this package are being actively generated and modified, and you may want to check for updates from time to time:
-
-```Mathematica
-MaZXCheckUpdate[]
-```
-
-In case there is an update, you can install it by using the following function:
-
-```Mathematica
-MaZXUpdate[]
-```
+The package is automatically upgraded if an update is available.
 
 ## Uninstall
 
