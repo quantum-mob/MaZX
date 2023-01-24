@@ -1,4 +1,4 @@
-# MaZX: A Mathematica Package for ZX-Calculus
+# MaZX
 
 The ZX-calculus is a graphical language to describe linear maps on qubits.
 In several aspects, it goes beyond quantum circuit model.
