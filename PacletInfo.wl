@@ -4,7 +4,7 @@
 
 Paclet[
   "Name" -> "MaZX",
-  "Version" -> "0.1.0",
+  "Version" -> "0.1.1", (* draft *)
   "WolframVersion" -> "12.1+",
   "Updating" -> Automatic,
   "Extensions" -> {
