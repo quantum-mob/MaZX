@@ -30,7 +30,7 @@ Note that along with MaZX, it also installs the main application Q3 for your con
 
 ## Update
 
-The package is automatically upgraded if an update is available.
+Once installed, MaZX will automatically check for updates and install the newest update (if any).
 
 ## Uninstall
 
