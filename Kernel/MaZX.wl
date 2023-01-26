@@ -9,8 +9,8 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 2.38 $"][[2]], " (",
-  StringSplit["$Date: 2023-01-26 18:53:05+09 $"][[2]], ") ",
+  StringSplit["$Revision: 2.39 $"][[2]], " (",
+  StringSplit["$Date: 2023-01-26 19:04:01+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
@@ -72,7 +72,7 @@ MaZXInfo[] := Module[
     Message[MaZXGeneral::local, pac @ "Location"]
    ];
 
-  StringJoin["MaZX v", pac @ "Version"]
+  StringJoin["MaZX v", pac @ "Version", " Mahn-Soo Choi"]
  ]
 
 
