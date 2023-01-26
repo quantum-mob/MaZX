@@ -9,12 +9,14 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 2.24 $"][[2]], " (",
-  StringSplit["$Date: 2023-01-24 22:27:26+09 $"][[2]], ") ",
+  StringSplit["$Revision: 2.38 $"][[2]], " (",
+  StringSplit["$Date: 2023-01-26 18:53:05+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
-{ ZXGeneral };
+{ MaZXInfo, MaZXUpdate, MaZXCheckUpdate };
+
+{ MaZXGeneral };
 
 { PhaseValue };
 
@@ -31,13 +33,81 @@ ClearAll["`*"];
 
 { ToZBasis, ToXBasis };
 
+{ ZXForm };
+
 { Layers };
+
+
+{ $Z, $X, $H, $B, $i, $o };
+
 
 Begin["`Private`"]
 
 ClearAll["`*"];
 
-ZXGeneral::base = "Something is wrong. You are trying Base[``], whish should not occur in ZX calculs."
+MaZXGeneral::base = "Something is wrong. You are trying Base[``], whish should not occur in ZX calculs."
+
+MaZXGeneral::local = "You are using a beta version of MaZX locally installed in `1`."
+
+MaZXGeneral::setup = "The MaZX application has not been installed properly. Go to `` for the installation guide."
+
+
+(**** <MaZXInfo> ****)
+
+MaZXInfo::usage = "MaZXInfo[] prints the information about the MaZX release."
+
+MaZXInfo[] := Module[
+  { pac = PacletObject @ "MaZX" },
+  If[ FailureQ @ pac,
+    Message[MaZXGeneral::setup,
+      Hyperlink["https://github.com/quantum-mob/MaZX/blob/main/INSTALL.md"]
+     ];
+    Return[pac]
+   ];
+  
+  If[ Not @ StringContainsQ[
+      pac @ "Location",
+      FileNameJoin @ {"Paclets", "Repository", "MaZX-"}
+     ],
+    Message[MaZXGeneral::local, pac @ "Location"]
+   ];
+
+  StringJoin["MaZX v", pac @ "Version"]
+ ]
+
+
+MaZXUpdate::usage = "MaZXUpdate[] installs the latest update of the package."
+
+MaZXUpdate[opts___?OptionQ] := (
+  PrintTemporary["Installing an update ..."];
+  PacletDataRebuild[];
+  Q3`Private`serverEnsure[];
+  PacletInstall["MaZX", opts, UpdatePacletSites -> True]
+ )
+
+
+MaZXCheckUpdate::usage = "MaZXCheckUpdate[] checks if there is a newer release of MaZX in the GitHub repository."
+
+MaZXCheckUpdate[] := Module[
+  { pac, new },
+  PrintTemporary["Checking for updates ..."];
+  PacletDataRebuild[];
+  Q3`Private`serverEnsure[];
+  pac = PacletFind["MaZX"];
+  new = PacletFindRemote["MaZX", UpdatePacletSites -> True];
+  If[ pac=={}, Return[$Failed], pac = Q3`Private`pacletVersion[pac] ];
+  If[ new=={}, Return[$Failed], new = Q3`Private`pacletVersion[new] ];
+  If[ OrderedQ @ {
+      Q3`Private`versionNumber @ new,
+      Q3`Private`versionNumber @ pac },
+    Print["You are using the latest release v", pac, " of MaZX."],
+    PrintTemporary["MaZX,v", new, " is now available; ",
+      "you are using v", pac, "."];
+    MaZXUpdate[]
+   ]
+ ]
+
+(**** </MaZXInfo> ****)
 
 
 ZSpider::usage = "ZSpider ..."
@@ -83,7 +153,7 @@ setSpecies[Z_Symbol] := (
   ZXSpeciesQ[Z[___][___]] ^= True;
 
   Z /: Base @ Z[k___] = Z[k];
-  Z /: Base @ Z := (Message[ZXGeneral::base, Z]; Z[0]);
+  Z /: Base @ Z := (Message[MaZXGeneral::base, Z]; Z[0]);
 
   Z[k___] := ReleaseHold @ Thread[Hold[Z][k]] /; AnyTrue[{k}, MatchQ[_List]];
   Format[Z[k___]] := Interpretation[Subscript[Z, k], Z[k]];
@@ -199,6 +269,8 @@ checkHadamards[g_Graph][hh_List] := Module[
  ]
 
 
+(**** <ZXDiagram> ****)
+
 ZXDiagram::usage = "ZXDiagram[{spec}] constructs the ZX diagram and stores it as ZXObject."
 
 ZXDiagram::none = "No phase value for some spiders: ``. Zero is assumed."
@@ -207,20 +279,23 @@ ZXDiagram::many = "Different phase values for the same spiders: ``. The first va
 
 ZXDiagram::hadamard = "Wrong arities for some Hadamard gates: ``. Every Hadamard gate should have one and only one input and output link."
 
-ZXDiagram[spec__, opts___?OptionQ] := Module[
-  { data, rest },
-  rest = Cases[Flatten @ {spec}, _ZXObject];
-  data = DeleteCases[Flatten @ {spec}, _ZXObject];
+(* NOTE: The ZX expressions needs to be enclosed in a List since they include
+   Rules, which may not be distinguished from options. *)
+ZXDiagram[past___ZXObject, spec_List, opts___?OptionQ] := Module[
+  { data },
   data = Association[
     "Spiders" -> ZXSpiders @ Join[
-      KeyValueMap[#1[#2]&, ZXSpiders @ rest],
-      data /. Rule -> List ],
-    "Hadamards" -> Hadamards @ {data /. Rule -> List},
-    "Diamonds" -> Diamonds @ {data /. Rule -> List},
-    "Links" -> ZXLinks[data]
+      KeyValueMap[#1[#2]&, ZXSpiders @ {past}],
+      spec /. Rule -> List ],
+    "Hadamards" -> Hadamards @ {spec /. Rule -> List},
+    "Diamonds" -> Diamonds @ {spec /. Rule -> List},
+    "Links" -> ZXLinks[spec]
    ];
-  Join[ZXObject[data, opts], Sequence @@ rest]
+  Join[ZXObject[data, opts], past]
  ]
+
+(**** </ZXDiagram> ****)
+
 
 (**** <ZXObject> ****)
 
@@ -268,7 +343,6 @@ Graph[ZXObject[data_Association, opts___?OptionQ], more___?OptionQ] :=
     
     Graph[ VertexList @ graph, EdgeList @ graph, more,
       Sequence @@ FilterRules[{opts}, Options @ Graph],
-      (* VertexLabels -> "Name", *)
       VertexShapeFunction -> Join[
         Thread[data["Diamonds"] -> "Diamond"],
         Thread[data["Hadamards"] -> "Square"] ], 
@@ -282,6 +356,7 @@ Graph[ZXObject[data_Association, opts___?OptionQ], more___?OptionQ] :=
       VertexSize -> sizes, 
       VertexLabels -> labels,
       EdgeStyle -> Arrowheads[{{0.05, 0.58}}],
+      ImageSize -> Medium,
       GraphLayout -> "SpringElectricalEmbedding"
      ]
    ]
@@ -350,7 +425,18 @@ theExpression[g_Graph][v_?HadamardQ] := With[
 
 theExpression[g_Graph][v_?DiamondQ[___]] = Sqrt[2]
 
-theExpression[g_Graph][_] = 1
+theExpression[g_Graph][v_] := Module[
+  { in = incomingEdges[g][v],
+    out = outgoingEdges[g][v] },
+  Which[
+    in == {}, (* input vertex *)
+    ZXMultiply[Ket[out -> 0], Bra[v -> 0]] +
+      ZXMultiply[Ket[out -> 1], Bra[v -> 1]],
+    out == {}, (* output vertex *)
+    ZXMultiply[Ket[v -> 0], Bra[in -> 0]] +
+      ZXMultiply[Ket[v -> 1], Bra[in -> 1]],
+    True, 1 ]
+ ]
 
 (**** </ZXObject> ****)
 
@@ -520,10 +606,67 @@ outgoingEdges[g_Graph][v_] :=
 
 (**** </Layers> ****)
 
-Let[ZSpider, Global`Z];
-Let[XSpider, Global`X];
-Let[Diamond, Global`B];
-Let[Hadamard, Global`H];
+
+(**** <ZXForm> ****)
+
+ZXForm::usage = "ZXForm[qc] converts quantum circuit qc to a ZXObject.\nNote that it only supports gates acting on up to two qubits."
+
+ZXForm[QuantumCircuit[spec___, opts___?OptionQ], more___?OptionQ] := Module[
+  { aa = Qubits @ {spec},
+    vv, ee },
+  aa = AssociationThread[aa -> Range[Length @ aa]];
+  vv = MapIndexed[zxcGate[aa], Flatten @ {spec}];
+  ee = Flatten @ ReplaceAll[ vv,
+    { Rule -> List,
+      _?DiamondQ -> Nothing,
+      sp_?ZXSpiderQ :> Base[sp] } ];
+  ee = KeyValueMap[
+    Chain[$i @ #1, Sequence @@ #2, $o @ #1]&,
+    GroupBy[ee, First @* Base]
+   ];
+  ZXDiagram[Flatten @ {vv, ee}, more, opts]
+ ]
+
+zxcGate[aa_Association][q_?QubitQ, {t_Integer}] := With[
+  { k = theSpacetime[aa][q, t] },
+  Switch[ FlavorLast[q],
+    3, $Z[k][Pi],
+    1, $X[k][Pi],
+    2, {$Z[k][Pi], $Z[k][Pi]},
+    6, $H[k],
+    _, 1
+   ]
+ ]
+
+zxcGate[ss_Association][CNOT[{a_?QubitQ} -> {1}, {b_?QubitQ}], {t_Integer}] :=
+  { $Z[theSpacetime[ss][a, t]][0] ->
+      $X[theSpacetime[ss][b, t]][0], $B[t] }
+
+theSpacetime[aa_Association][q_?QubitQ, t_Integer] :=
+  Sequence[aa @ FlavorMute @ q, t]
+
+(**** </ZXForm> ****)
+
+
+(**** Epilog ****)
+
+$Z::usage = "$Z is a symbol reserved for the Z spider in the ZX-calculus. See also \[FormalCapitalZ]."
+
+$X::usage = "$X is a symbol reserved for the X spider in the ZX-calculus. See also \[FormalCapitalX]."
+
+$H::usage = "$H is a symbol reserved for the Hadamard gate in the ZX-calculus. See also \[FormalCapitalH]."
+
+$B::usage = "$B is a symbol reserved for the ZX diamond in the ZX-calculus. See also \[FormalCapitalB]."
+
+$i::usage = "$i is a symbol reserved for inputs in a ZX diagram."
+
+$o::usage = "$o is a symbol reserved for outputs in a ZX diagram."
+
+Let[ZSpider, $Z, Global`Z];
+Let[XSpider, $X, Global`X];
+Let[Diamond, $B, Global`B];
+Let[Hadamard, $H, Global`H];
+Let[Species, $i, $o];
 
 SetAttributes[Evaluate @ Names["`*"], ReadProtected];
 
