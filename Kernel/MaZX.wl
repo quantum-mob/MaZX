@@ -1,6 +1,6 @@
 (* -*- mode:math -*- *)
 Get["Q3`"];
-Q3Assert["2.9.3"];
+Q3Assert["2.9.5"];
 
 BeginPackage["MaZX`", {"Q3`"}]
 
@@ -9,8 +9,8 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 2.39 $"][[2]], " (",
-  StringSplit["$Date: 2023-01-26 19:04:01+09 $"][[2]], ") ",
+  StringSplit["$Revision: 3.17 $"][[2]], " (",
+  StringSplit["$Date: 2023-01-28 01:07:37+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
@@ -23,7 +23,7 @@ ClearAll["`*"];
 { ZXDiagram, ZXObject,
   ZXMultiply, ZXBraKet };
 
-{ ZXSpeciesQ,
+{ ZXSpeciesQ, ZXSpiderQ,
   ZSpider, ZSpiders, ZSpiderQ,
   XSpider, XSpiders, XSpiderQ,
   Hadamard, Hadamards, HadamardQ,
@@ -35,7 +35,9 @@ ClearAll["`*"];
 
 { ZXForm };
 
-{ Layers };
+{ ZXLayers };
+
+{ ZXDot };
 
 
 { $Z, $X, $H, $B, $i, $o };
@@ -194,7 +196,7 @@ setHadamard[H_Symbol] := (
 
 
 ZXSpeciesQ[_] = False;
-ZSpiderQ[_] = XSpiderQ[] = HadamardQ[_] = DiamondQ[_] = False;
+ZSpiderQ[_] = XSpiderQ[_] = HadamardQ[_] = DiamondQ[_] = False;
 ZXSpiderQ[S_] := Or[ZSpiderQ @ S, XSpiderQ @ S]
 
 
@@ -209,7 +211,7 @@ PhaseValue[_] = Nothing
 
 ZXLinks::usage = "ZXLinks[expr] returns an association of ZX links in expression expr."
 
-ZXLinks[expr_] := Union @ ReplaceAll[
+ZXLinks[expr_] := ReplaceAll[
   Cases[Flatten @ {expr}, _Rule],
   op_?ZXSpeciesQ :> Base[op]
  ]
@@ -259,7 +261,7 @@ checkHadamards[g_Graph][hh_List] := Module[
   { dd },
   dd = Transpose @ {
     VertexInDegree[g, #]& /@ hh,
-    VertexInDegree[g, #]& /@ hh };
+    VertexOutDegree[g, #]& /@ hh };
   dd = AssociationThread[hh -> dd];
   If[ AnyTrue[dd, (# != 1)&, 2],
     dd = Select[dd, AnyTrue[#, (# != 1)&]&];
@@ -319,10 +321,7 @@ ZXObject /:
 Graph[ZXObject[data_Association, opts___?OptionQ], more___?OptionQ] :=
   Module[
     { graph, gates, sizes, labels, zz, xx, hh, bb, ss },
-    graph = Graph[
-      Join[Keys @ data @ "Spiders", data @ "Hadamards", data @ "Diamonds"],
-      data @ "Links"
-     ];
+    graph = theGraph[ZXObject @ data];
     sizes = Map[
       (# -> If[MemberQ[AdjacencyList[graph, #], #], 0.01, 0.4])&,
       VertexList[graph]
@@ -361,6 +360,13 @@ Graph[ZXObject[data_Association, opts___?OptionQ], more___?OptionQ] :=
      ]
    ]
 
+(* Minimal graph with only skeleton. *)
+theGraph[ZXObject[data_Association, ___?OptionQ], more___?OptionQ] :=
+  Graph[
+    Join[Keys @ data @ "Spiders", data @ "Hadamards", data @ "Diamonds"],
+    data @ "Links",
+    more
+   ];
 
 ZXObject /:
 Basis[obj:ZXObject[data_Association, ___?OptionQ], ___] := Module[
@@ -382,10 +388,6 @@ Basis[obj_ZXObject, ___] := obj (* fallback *)
 
 
 ZXObject /:
-Matrix[obj_ZXObject, ___] := Matrix @ ExpressionFor[obj]
-
-
-ZXObject /:
 ExpressionFor[obj:ZXObject[data_Association, ___]] := Module[
   { graph = Graph @ obj,
     layers, rules },
@@ -393,9 +395,9 @@ ExpressionFor[obj:ZXObject[data_Association, ___]] := Module[
     (First[#] -> First[#][Last @ #])&,
     data @ "Spiders"
    ];
-  layers = Layers[graph] /. rules;
+  layers = ZXLayers[graph] /. rules;
   Apply[ ZXMultiply,
-    theExpression[graph] /@ Flatten[Reverse @ Values @ layers]
+    theExpression[graph] /@ Flatten[Reverse @ layers]
    ] * Power[Sqrt[2], Length @ data @ "Diamonds"] // Garner
  ]
 
@@ -439,6 +441,122 @@ theExpression[g_Graph][v_] := Module[
  ]
 
 (**** </ZXObject> ****)
+
+
+(**** <Matrix> ****)
+
+(* 2023-01-26: This method is slow. *)
+(*
+ZXObject /:
+Matrix[obj_ZXObject, ___] := Matrix @ ExpressionFor[obj]
+ *)
+
+ZXObject /:
+Matrix[obj_ZXObject, ___] := Module[
+  { graph = theGraph[obj],
+    spiders = ZXSpiders[obj],
+    clusters },
+  clusters = Subgraph[graph, #]& /@ WeaklyConnectedComponents[graph];
+  CircleTimes @@ Map[theMatrixByCluster[spiders], clusters]
+ ]
+
+theMatrixByCluster[spiders_Association][graph_Graph] := Module[
+  { in, out, mat },
+  in  = Sort @ Select[
+    DeleteCases[VertexList @ graph, _?ZXSpeciesQ],
+    VertexInDegree[graph, #] == 0 &
+   ];
+  out = Sort @ Select[
+    DeleteCases[VertexList @ graph, _?ZXSpeciesQ],
+    VertexOutDegree[graph, #] == 0 &
+   ];
+  vv = Flatten[ZXLayers @ graph] /.
+    KeyValueMap[Rule[#1, #1[#2]]&, spiders];
+  mat = theMatrix[graph] /@ vv;
+  {out, mat, in} = Fold[ ZXDot[#2, #1]&,
+    {in, One @ Power[2, Length @ in], in},
+    Append[mat, {out, One @ Power[2, Length @ out], out}]
+   ];
+  mat
+ ]
+
+ZXDot::nomtch = "There is a mismatch between two index sets `` and ``."
+
+SetAttributes[ZXDot, {Flat, OneIdentity}];
+
+(* NOTE: TensorProduct is rather slow; otherwise, using TensorProduct and
+   TensorContract may make this code simpler . *)
+ZXDot[
+  {a_?VectorQ, A_?MatrixQ, b_?VectorQ},
+  {c_?VectorQ, B_?MatrixQ, d_?VectorQ} ] := Module[
+    { AA, BB, bb, bc, cc, pb, pc, d1, d2, d3, d4 },
+    {d1, d2} = Dimensions[A];
+    {d3, d4} = Dimensions[B];
+
+    bc = Intersection[b, c];
+    bb = Complement[b, c];
+    cc = Complement[c, b];
+
+    pb = Join[ {1},
+      1 + PermutationList[FindPermutation[b, Join[bb, bc]], Length[b]] ];
+    pc = PermutationList[FindPermutation[c, Join[bc, cc]], Length[c]+1];
+
+    AA = ArrayReshape[
+      Transpose[ArrayReshape[A, Join[{d1}, Table[2, Length @ b]]], pb],
+      {d1, Power[2, Length @ bb], Power[2, Length @ bc]}
+     ];
+    BB = ArrayReshape[
+      Transpose[ArrayReshape[B, Join[Table[2, Length @ c], {d4}]], pc],
+      {Power[2, Length @ bc], Power[2, Length @ cc], d4}
+     ];
+    { Join[a, cc],
+      ArrayReshape[ Transpose[AA . BB, 2 <-> 3],
+        {d1 * Power[2, Length @ cc], d4 * Power[2, Length @ bb]}],
+      Join[bb, d] }
+   ]
+
+theZ[out_Integer, in_Integer, phi_] := SparseArray @ {
+  {1, 1} -> 1,
+  {Power[2, out], Power[2, in]} -> Exp[I*phi]
+ }
+
+theX[out_Integer, in_Integer, phi_] :=
+  Apply[ThePauli, Table[6, out]] . theZ[out, in, phi] .
+  Apply[ThePauli, Table[6, in]]
+
+  
+theMatrix[g_Graph][v_?ZSpiderQ[k___][p_]] := With[
+  { in = incomingEdges[g][v @ k],
+    out = outgoingEdges[g][v @ k] },
+  {out, theZ[Length @ out, Length @ in, p], in}
+ ]
+
+theMatrix[g_Graph][v_?XSpiderQ[k___][p_]] := With[
+  { in = incomingEdges[g][v @ k],
+    out = outgoingEdges[g][v @ k] },
+  {out, theX[Length @ out, Length @ in, p], in}
+ ]
+
+theMatrix[g_Graph][v_?HadamardQ] := With[
+  { in = incomingEdges[g][v],
+    out = outgoingEdges[g][v] },
+  {out, ThePauli[6], in}
+ ]
+
+theMatrix[g_Graph][v_?DiamondQ] = { {}, {{Sqrt[2]}}, {} }
+
+theMatrix[g_Graph][v_] := Module[
+  { in = incomingEdges[g][v],
+    out = outgoingEdges[g][v] },
+  Which[
+    in == {}, (* input vertex *)
+    {out, theZ[Length @ out, 1, 0], {v}},
+    out == {}, (* output vertex *)
+    {{v}, theZ[1, Length @ in, 0], in},
+    True, {{}, {{1}}, {}} ]
+ ]
+
+(**** </Matrix> ****)
 
 
 (**** <ZXMultiply> ****)
@@ -578,13 +696,13 @@ ToXBasis[expr_] := ToXBasis[expr, All]
 (**** </ToXBasis> </ToZBasis> ****)
 
 
-(**** <Layers> ****)
+(**** <ZXLayers> ****)
 
-Layers::usage = "Layers[graph] returns the list of layers.\nSee also LayeredGraphPlot, LayeredGraphPlot3D."
+ZXLayers::usage = "ZXLayers[graph] returns the list of layers.\nSee also LayeredGraphPlot, LayeredGraphPlot3D."
 
-Layers[graph_Graph] := <||> /; VertexList[graph] <= 1
+ZXLayers[graph_Graph] := <||> /; VertexList[graph] <= 1
 
-Layers[graph_Graph] := Module[
+ZXLayers[graph_Graph] := Module[
   { vv = VertexList @ graph,
     in, layers },
   in = Select[vv, VertexInDegree[graph, #] == 0&];
@@ -592,19 +710,28 @@ Layers[graph_Graph] := Module[
     NestList[VertexOutComponent[graph, #, {1}]&, in, Length @ vv],
     {}
    ];
-  layers = FoldPairList[
+  Reverse @ FoldPairList[
     {Complement[#2, #1], Union[#2, #1]}&,
-    {}, Reverse @ layers ];
-  AssociationThread[Range[Length @ layers] -> Reverse[layers]]
+    {}, Reverse @ layers ] /. {} -> Nothing
  ]
+
+ZXLayers[obj_ZXObject] := With[
+  { graph = Graph @ obj },
+  Map[ Graph[#, ImageSize -> 100] -> ZXLayers[#] &,
+    Map[Subgraph[graph, #]&, WeaklyConnectedComponents @ graph] ]
+ ]
+
+incomingEdges::usage = "incomingEdges[g][v] returns the list of edges incoming to vertex v in graph g."
 
 incomingEdges[g_Graph][v_] :=
   Map[EdgeIndex[g, #]&, EdgeList[g, DirectedEdge[_, v]]]
 
+outgoingEdges::usage = "outgoingEdges[g][v] returns the list of edges outgoing from vertex v in graph g."
+
 outgoingEdges[g_Graph][v_] :=
   Map[EdgeIndex[g, #]&, EdgeList[g, DirectedEdge[v, _]]]
 
-(**** </Layers> ****)
+(**** </ZXLayers> ****)
 
 
 (**** <ZXForm> ****)
@@ -622,7 +749,7 @@ ZXForm[QuantumCircuit[spec___, opts___?OptionQ], more___?OptionQ] := Module[
       sp_?ZXSpiderQ :> Base[sp] } ];
   ee = KeyValueMap[
     Chain[$i @ #1, Sequence @@ #2, $o @ #1]&,
-    GroupBy[ee, First @* Base]
+    KeyTake[GroupBy[ee, First @* Base], Values @ aa]
    ];
   ZXDiagram[Flatten @ {vv, ee}, more, opts]
  ]
@@ -637,6 +764,13 @@ zxcGate[aa_Association][q_?QubitQ, {t_Integer}] := With[
     _, 1
    ]
  ]
+
+zxcGate[ss_Association][CZ[{a_?QubitQ}, {b_?QubitQ}], {t_Integer}] := 
+  { Chain[
+      $Z[theSpacetime[ss][a, t]][0],
+      $H[Unique[], t],
+      $Z[theSpacetime[ss][b, t]][0] ],
+    $B[t] }
 
 zxcGate[ss_Association][CNOT[{a_?QubitQ} -> {1}, {b_?QubitQ}], {t_Integer}] :=
   { $Z[theSpacetime[ss][a, t]][0] ->

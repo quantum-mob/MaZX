@@ -1,5 +1,10 @@
 # Select Release Notes
 
+## v0.2.0
+
+- ZXForm to convert quantum circuit to a ZX diagram.
+- Matrix[ZXObject] is more robust and general now.
+
 ## v0.1.1
 
 - Conversion of quantum circuits to ZXDiagram.
