@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     46190,       1168]
-NotebookOptionsPosition[     38043,        992]
-NotebookOutlinePosition[     38838,       1018]
-CellTagsIndexPosition[     38758,       1013]
+NotebookDataLength[     48008,       1215]
+NotebookOptionsPosition[     39852,       1039]
+NotebookOutlinePosition[     40647,       1065]
+CellTagsIndexPosition[     40567,       1060]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -169,10 +169,10 @@ Cell[TextData[{
     "9ae21a0b-7dc5-41b7-bf07-a6fd7749c1e4"], 
    DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
     "b87e9dce-1256-4b75-adb5-baf36c0ba6a8", 
-     "bf899b69-d93a-4edc-804b-b4187ba4f8f8"], $CellContext`cellobj$$ = 
+     "a98b0a4c-ff06-4fcf-9f66-d1a7562f046b"], $CellContext`cellobj$$ = 
     CellObject[
     "e098e830-453c-47e3-b80a-6add6407e477", 
-     "3cdc0fcf-7491-4eb1-ad77-b5c0eef8297d"]}, 
+     "60e5afd2-dbf9-416e-847b-5caac87a2132"]}, 
     TemplateBox[{
       GraphicsBox[{{
          Thickness[0.06], 
@@ -275,76 +275,75 @@ Cell[BoxData[
       RowBox[{"X", "[", "1", "]"}], "[", 
       RowBox[{"Pi", "/", "4"}], "]"}], ",", "o"}], "]"}], "]"}]}]], "Input",
  CellChangeTimes->{{3.8835568272725*^9, 3.883556867081602*^9}},
- CellLabel->"In[586]:=",
+ CellLabel->"In[27]:=",
  CellID->690573494,ExpressionUUID->"ebb9bcbb-28d4-4dab-8303-d13fccc01ee6"],
 
 Cell[BoxData[
- GraphicsBox[
-  NamespaceBox["NetworkGraphics",
-   DynamicModuleBox[{Typeset`graph = HoldComplete[
-     Graph[{
-       $CellContext`X[1], 
-       $CellContext`Z[
-       1], $CellContext`i1, $CellContext`i2, $CellContext`o}, {{{3, 2}, {4, 
-       2}, {1, 5}, {2, 1}}, Null}, {EdgeStyle -> {
-         Arrowheads[{{0.05, 0.58}}]}, GraphLayout -> 
-       "SpringElectricalEmbedding", ImageSize -> Medium, 
-       VertexLabels -> {$CellContext`Z[1] -> 
-         Placed[Rational[1, 3] Pi, Center], $CellContext`X[1] -> 
-         Placed[Rational[1, 4] Pi, Center]}, 
-       VertexSize -> {$CellContext`X[1] -> 0.4, $CellContext`Z[1] -> 
-         0.4, $CellContext`i1 -> 0.4, $CellContext`i2 -> 0.4, $CellContext`o -> 
-         0.4}, VertexStyle -> {$CellContext`Z[1] -> 
-         RGBColor[0, 1, 0], $CellContext`o -> Directive[
-           GrayLevel[0, 0], 
-           EdgeForm[]], $CellContext`X[1] -> 
-         RGBColor[1, 0, 0], $CellContext`i2 -> Directive[
-           GrayLevel[0, 0], 
-           EdgeForm[]], $CellContext`i1 -> Directive[
-           GrayLevel[0, 0], 
-           EdgeForm[]]}}]]}, 
-    TagBox[GraphicsGroupBox[{
-       {Hue[0.6, 0.7, 0.5], Opacity[0.7], Arrowheads[{{0.05, 0.58}}], 
-        ArrowBox[{{{0.9490584256823887, 0.7371234383875438}, {0., 
-         0.7370834976971137}}, {{2.0579454251233766`, 0.7370854173558191}, {
-         0.9490584256823887, 0.7371234383875438}}, {{2.683654942329416, 0.}, {
-         2.0579454251233766`, 0.7370854173558191}}, {{2.6836977913276936`, 
-         1.474163695329096}, {2.0579454251233766`, 0.7370854173558191}}}, 
-         0.02792743582839699]}, 
-       {Hue[0.6, 0.2, 0.8], EdgeForm[{GrayLevel[0], Opacity[0.7]}], {
-         {RGBColor[1, 0, 0], 
-          DiskBox[{0.9490584256823887, 0.7371234383875438}, 
-           0.18981168530456632]}, InsetBox[
-          FractionBox["\[Pi]", "4"], {0.9490584256823887, 0.7371234383875438},
-          
-          BaseStyle->"Graphics"]}, {
-         {RGBColor[0, 1, 0], 
-          DiskBox[{2.0579454251233766, 0.7370854173558191}, 
-           0.18981168530456632]}, InsetBox[
-          FractionBox["\[Pi]", "3"], {2.0579454251233766, 0.7370854173558191},
-          
-          BaseStyle->"Graphics"]}, 
-        {GrayLevel[0], Opacity[0], EdgeForm[None], 
-         DiskBox[{2.683654942329416, 0.}, 0.18981168530456632]}, 
-        {GrayLevel[0], Opacity[0], EdgeForm[None], 
-         DiskBox[{2.6836977913276936, 1.474163695329096}, 
-          0.18981168530456632]}, 
-        {GrayLevel[0], Opacity[0], EdgeForm[None], 
-         DiskBox[{0., 0.7370834976971137}, 0.18981168530456632]}}}],
-     MouseAppearanceTag["NetworkGraphics"]],
-    AllowKernelInitialization->False]],
-  AxesStyle->{},
-  DefaultBaseStyle->"NetworkGraphics",
-  FormatType->TraditionalForm,
-  FrameStyle->{},
-  FrameTicks->None,
-  ImageSize->Medium,
-  PlotRangePadding->Automatic]], "Output",
+ InterpretationBox[
+  GraphicsBox[
+   NamespaceBox["NetworkGraphics",
+    DynamicModuleBox[{Typeset`graph = HoldComplete[
+      Graph[{$CellContext`i1, $CellContext`i2, $CellContext`o, 
+        $CellContext`X[1][Rational[1, 4] Pi], 
+        $CellContext`Z[1][Rational[1, 3] Pi]}, {{{1, 5}, {2, 5}, {5, 4}, {4, 
+        3}}, Null}, {EdgeStyle -> {
+          Arrowheads[{{0.05, 0.58}}]}, ImageSize -> Medium, 
+        VertexLabels -> {$CellContext`Z[1][Rational[1, 3] Pi] -> 
+          Placed[Rational[1, 3] Pi, Center], $CellContext`X[1][
+           Rational[1, 4] Pi] -> Placed[Rational[1, 4] Pi, Center]}, 
+        VertexSize -> {$CellContext`Z[1][Rational[1, 3] Pi] -> 
+          0.4, $CellContext`X[1][Rational[1, 4] Pi] -> 0.4, $CellContext`i1 -> 
+          0.4, $CellContext`i2 -> 0.4, $CellContext`o -> 0.4}, 
+        VertexStyle -> {$CellContext`X[1][Rational[1, 4] Pi] -> 
+          RGBColor[1, 0, 0], $CellContext`o -> Directive[
+            GrayLevel[0, 0], 
+            EdgeForm[]], $CellContext`i2 -> Directive[
+            GrayLevel[0, 0], 
+            EdgeForm[]], $CellContext`i1 -> Directive[
+            GrayLevel[0, 0], 
+            EdgeForm[]], $CellContext`Z[1][Rational[1, 3] Pi] -> 
+          RGBColor[0, 1, 0]}}]]}, 
+     TagBox[GraphicsGroupBox[{
+        {Hue[0.6, 0.7, 0.5], Opacity[0.7], Arrowheads[{{0.05, 0.58}}], 
+         ArrowBox[{{0., 3.}, {1., 2.}}, 0.030239520958083826`], 
+         ArrowBox[{{1., 3.}, {1., 2.}}, 0.030239520958083826`], 
+         ArrowBox[{{1., 1.}, {1., 0.}}, 0.030239520958083826`], 
+         ArrowBox[{{1., 2.}, {1., 1.}}, 0.030239520958083826`]}, 
+        {Hue[0.6, 0.2, 0.8], EdgeForm[{GrayLevel[0], Opacity[0.7]}], 
+         {GrayLevel[0], Opacity[0], EdgeForm[None], DiskBox[{0., 3.}, 0.2]}, 
+         {GrayLevel[0], Opacity[0], EdgeForm[None], DiskBox[{1., 3.}, 0.2]}, 
+         {GrayLevel[0], Opacity[0], EdgeForm[None], 
+          DiskBox[{1., 0.}, 0.2]}, {
+          {RGBColor[1, 0, 0], DiskBox[{1., 1.}, 0.2]}, InsetBox[
+           FractionBox["\[Pi]", "4"], {1., 1.},
+           BaseStyle->"Graphics"]}, {
+          {RGBColor[0, 1, 0], DiskBox[{1., 2.}, 0.2]}, InsetBox[
+           FractionBox["\[Pi]", "3"], {1., 2.},
+           BaseStyle->"Graphics"]}}}],
+      MouseAppearanceTag["NetworkGraphics"]],
+     AllowKernelInitialization->False]],
+   AxesStyle->{},
+   DefaultBaseStyle->"NetworkGraphics",
+   FormatType->TraditionalForm,
+   FrameStyle->{},
+   FrameTicks->None,
+   ImageSize->Medium,
+   PlotRangePadding->Automatic],
+  MaZX`ZXObject[{$CellContext`i1, $CellContext`i2, $CellContext`o, 
+    $CellContext`X[1][Rational[1, 4] Pi], 
+    $CellContext`Z[1][
+    Rational[1, 3] Pi]}, {$CellContext`i1 -> $CellContext`Z[1][
+     Rational[1, 3] Pi], $CellContext`i2 -> $CellContext`Z[1][
+     Rational[1, 3] Pi], $CellContext`Z[1][
+     Rational[1, 3] Pi] -> $CellContext`X[1][
+     Rational[1, 4] Pi], $CellContext`X[1][
+     Rational[1, 4] Pi] -> $CellContext`o}]]], "Output",
  CellChangeTimes->{{3.883556867536448*^9, 3.883556873916872*^9}, 
    3.883704824057816*^9, 3.8837151360073977`*^9, {3.88378375465801*^9, 
-   3.8837837638684263`*^9}, 3.883783800355647*^9, 3.883812262091769*^9},
- CellLabel->"Out[586]=",
- CellID->1533581332,ExpressionUUID->"c8473c94-b55a-4f41-83d4-e39bc5ae1ef8"]
+   3.8837837638684263`*^9}, 3.883783800355647*^9, 3.883812262091769*^9, 
+   3.883922352315321*^9},
+ CellLabel->"Out[27]=",
+ CellID->593023841,ExpressionUUID->"d75bbc35-0841-49e8-a8ac-4a215eac9b46"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -353,7 +352,7 @@ Cell[BoxData[
  RowBox[{"ZXLayers", "[", 
   RowBox[{"Graph", "@", "obj"}], "]"}]], "Input",
  CellChangeTimes->{{3.883556875648633*^9, 3.883556883291692*^9}},
- CellLabel->"In[587]:=",
+ CellLabel->"In[28]:=",
  CellID->1512042646,ExpressionUUID->"586c4ed7-2631-49b8-88ea-383fc585e6f4"],
 
 Cell[BoxData[
@@ -363,19 +362,33 @@ Cell[BoxData[
     RowBox[{"i1", ",", "i2"}], "}"}], ",", 
    RowBox[{"{", 
     InterpretationBox[
-     SubscriptBox["Z", "1"],
-     $CellContext`Z[1]], "}"}], ",", 
+     TagBox[
+      FormBox[
+       RowBox[{
+        SubscriptBox["Z", "1"], "(", 
+        FractionBox["\[Pi]", "3"], ")"}],
+       TraditionalForm],
+      TraditionalForm,
+      Editable->True],
+     $CellContext`Z[1][Rational[1, 3] Pi]], "}"}], ",", 
    RowBox[{"{", 
     InterpretationBox[
-     SubscriptBox["X", "1"],
-     $CellContext`X[1]], "}"}], ",", 
+     TagBox[
+      FormBox[
+       RowBox[{
+        SubscriptBox["X", "1"], "(", 
+        FractionBox["\[Pi]", "4"], ")"}],
+       TraditionalForm],
+      TraditionalForm,
+      Editable->True],
+     $CellContext`X[1][Rational[1, 4] Pi]], "}"}], ",", 
    RowBox[{"{", "o", "}"}]}], "}"}]], "Output",
  CellChangeTimes->{
   3.8835568836190777`*^9, 3.883704825402443*^9, 3.8837151366640244`*^9, 
    3.883783765644884*^9, {3.8837838011210623`*^9, 3.883783815419952*^9}, 
-   3.883812262953044*^9},
- CellLabel->"Out[587]=",
- CellID->1281005577,ExpressionUUID->"d536e7cc-ba68-48a8-a779-5227029ed0de"]
+   3.883812262953044*^9, 3.883922354111533*^9},
+ CellLabel->"Out[28]=",
+ CellID->1667460327,ExpressionUUID->"466fc535-8f9d-40a9-8a56-fde92567f0c0"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -383,65 +396,54 @@ Cell[CellGroupData[{
 Cell[BoxData[
  RowBox[{"ZXLayers", "[", "obj", "]"}]], "Input",
  CellChangeTimes->{{3.883783810712281*^9, 3.883783811452918*^9}},
- CellLabel->"In[588]:=",
+ CellLabel->"In[29]:=",
  CellID->1475772934,ExpressionUUID->"da789c25-c74e-4dd8-b1a2-68512aa1758a"],
 
 Cell[BoxData[
- RowBox[{"\[LeftAssociation]", 
+ RowBox[{"{", 
   RowBox[{
    GraphicsBox[
     NamespaceBox["NetworkGraphics",
      DynamicModuleBox[{Typeset`graph = HoldComplete[
-       Graph[{
-         $CellContext`X[1], 
-         $CellContext`Z[
-         1], $CellContext`i1, $CellContext`i2, $CellContext`o}, {{{2, 1}, {3, 
-         2}, {4, 2}, {1, 5}}, Null}, {EdgeStyle -> {
-           Arrowheads[{{0.05, 0.58}}]}, GraphLayout -> 
-         "SpringElectricalEmbedding", ImageSize -> Medium, 
-         VertexLabels -> {$CellContext`Z[1] -> 
-           Placed[Rational[1, 3] Pi, Center], $CellContext`X[1] -> 
-           Placed[Rational[1, 4] Pi, Center]}, 
-         VertexSize -> {$CellContext`X[1] -> 0.4, $CellContext`Z[1] -> 
-           0.4, $CellContext`i1 -> 0.4, $CellContext`i2 -> 
-           0.4, $CellContext`o -> 0.4}, 
-         VertexStyle -> {$CellContext`Z[1] -> 
-           RGBColor[0, 1, 0], $CellContext`o -> Directive[
-             GrayLevel[0, 0], 
-             EdgeForm[]], $CellContext`X[1] -> 
-           RGBColor[1, 0, 0], $CellContext`i1 -> Directive[
+       Graph[{$CellContext`i1, $CellContext`i2, $CellContext`o, 
+         $CellContext`X[1][Rational[1, 4] Pi], 
+         $CellContext`Z[1][Rational[1, 3] Pi]}, {{{4, 3}, {5, 4}, {1, 5}, {2, 
+         5}}, Null}, {EdgeStyle -> {
+           Arrowheads[{{0.05, 0.58}}]}, GraphLayout -> {"Dimension" -> 2}, 
+         ImageSize -> 100, 
+         VertexLabels -> {$CellContext`Z[1][Rational[1, 3] Pi] -> 
+           Placed[Rational[1, 3] Pi, Center], $CellContext`X[1][
+            Rational[1, 4] Pi] -> Placed[Rational[1, 4] Pi, Center]}, 
+         VertexSize -> {$CellContext`Z[1][Rational[1, 3] Pi] -> 
+           0.4, $CellContext`X[1][Rational[1, 4] Pi] -> 0.4, $CellContext`i1 -> 
+           0.4, $CellContext`i2 -> 0.4, $CellContext`o -> 0.4}, 
+         VertexStyle -> {$CellContext`X[1][Rational[1, 4] Pi] -> 
+           RGBColor[1, 0, 0], $CellContext`o -> Directive[
              GrayLevel[0, 0], 
              EdgeForm[]], $CellContext`i2 -> Directive[
              GrayLevel[0, 0], 
-             EdgeForm[]]}}]]}, 
+             EdgeForm[]], $CellContext`i1 -> Directive[
+             GrayLevel[0, 0], 
+             EdgeForm[]], $CellContext`Z[1][Rational[1, 3] Pi] -> 
+           RGBColor[0, 1, 0]}}]]}, 
       TagBox[GraphicsGroupBox[{
          {Hue[0.6, 0.7, 0.5], Opacity[0.7], Arrowheads[{{0.05, 0.58}}], 
-          ArrowBox[{{{0.9490584256823887, 0.7371234383875438}, {0., 
-           0.7370834976971137}}, {{2.0579454251233766`, 0.7370854173558191}, {
-           0.9490584256823887, 0.7371234383875438}}, {{2.683654942329416, 
-           0.}, {2.0579454251233766`, 0.7370854173558191}}, {{
-           2.6836977913276936`, 1.474163695329096}, {2.0579454251233766`, 
-           0.7370854173558191}}}, 0.02792743582839699]}, 
-         {Hue[0.6, 0.2, 0.8], EdgeForm[{GrayLevel[0], Opacity[0.7]}], {
-           {RGBColor[1, 0, 0], 
-            DiskBox[{0.9490584256823887, 0.7371234383875438}, 
-             0.18981168530456632]}, InsetBox[
-            FractionBox["\[Pi]", "4"], {0.9490584256823887, 0.7371234383875438},
-            
+          ArrowBox[{{0., 3.}, {1., 2.}}, 0.030239520958083826`], 
+          ArrowBox[{{1., 3.}, {1., 2.}}, 0.030239520958083826`], 
+          ArrowBox[{{1., 1.}, {1., 0.}}, 0.030239520958083826`], 
+          ArrowBox[{{1., 2.}, {1., 1.}}, 0.030239520958083826`]}, 
+         {Hue[0.6, 0.2, 0.8], EdgeForm[{GrayLevel[0], Opacity[0.7]}], 
+          {GrayLevel[0], Opacity[0], EdgeForm[None], 
+           DiskBox[{0., 3.}, 0.2]}, 
+          {GrayLevel[0], Opacity[0], EdgeForm[None], 
+           DiskBox[{1., 3.}, 0.2]}, 
+          {GrayLevel[0], Opacity[0], EdgeForm[None], DiskBox[{1., 0.}, 0.2]}, {
+           {RGBColor[1, 0, 0], DiskBox[{1., 1.}, 0.2]}, InsetBox[
+            FractionBox["\[Pi]", "4"], {1., 1.},
             BaseStyle->"Graphics"]}, {
-           {RGBColor[0, 1, 0], 
-            DiskBox[{2.0579454251233766, 0.7370854173558191}, 
-             0.18981168530456632]}, InsetBox[
-            FractionBox["\[Pi]", "3"], {2.0579454251233766, 0.7370854173558191},
-            
-            BaseStyle->"Graphics"]}, 
-          {GrayLevel[0], Opacity[0], EdgeForm[None], 
-           DiskBox[{2.683654942329416, 0.}, 0.18981168530456632]}, 
-          {GrayLevel[0], Opacity[0], EdgeForm[None], 
-           DiskBox[{2.6836977913276936, 1.474163695329096}, 
-            0.18981168530456632]}, 
-          {GrayLevel[0], Opacity[0], EdgeForm[None], 
-           DiskBox[{0., 0.7370834976971137}, 0.18981168530456632]}}}],
+           {RGBColor[0, 1, 0], DiskBox[{1., 2.}, 0.2]}, InsetBox[
+            FractionBox["\[Pi]", "3"], {1., 2.},
+            BaseStyle->"Graphics"]}}}],
        MouseAppearanceTag["NetworkGraphics"]],
       AllowKernelInitialization->False]],
     AxesStyle->{},
@@ -449,7 +451,7 @@ Cell[BoxData[
     FormatType->TraditionalForm,
     FrameStyle->{},
     FrameTicks->None,
-    ImageSize->Medium,
+    ImageSize->100,
     PlotRangePadding->Automatic], "\[Rule]", 
    RowBox[{"{", 
     RowBox[{
@@ -457,17 +459,31 @@ Cell[BoxData[
       RowBox[{"i1", ",", "i2"}], "}"}], ",", 
      RowBox[{"{", 
       InterpretationBox[
-       SubscriptBox["Z", "1"],
-       $CellContext`Z[1]], "}"}], ",", 
+       TagBox[
+        FormBox[
+         RowBox[{
+          SubscriptBox["Z", "1"], "(", 
+          FractionBox["\[Pi]", "3"], ")"}],
+         TraditionalForm],
+        TraditionalForm,
+        Editable->True],
+       $CellContext`Z[1][Rational[1, 3] Pi]], "}"}], ",", 
      RowBox[{"{", 
       InterpretationBox[
-       SubscriptBox["X", "1"],
-       $CellContext`X[1]], "}"}], ",", 
-     RowBox[{"{", "o", "}"}]}], "}"}]}], "\[RightAssociation]"}]], "Output",
+       TagBox[
+        FormBox[
+         RowBox[{
+          SubscriptBox["X", "1"], "(", 
+          FractionBox["\[Pi]", "4"], ")"}],
+         TraditionalForm],
+        TraditionalForm,
+        Editable->True],
+       $CellContext`X[1][Rational[1, 4] Pi]], "}"}], ",", 
+     RowBox[{"{", "o", "}"}]}], "}"}]}], "}"}]], "Output",
  CellChangeTimes->{{3.88378381196025*^9, 3.883783816094261*^9}, 
-   3.883812263829363*^9},
- CellLabel->"Out[588]=",
- CellID->789998716,ExpressionUUID->"efb7635d-4581-4b73-aae2-f32b807d7efa"]
+   3.883812263829363*^9, 3.8839223550355043`*^9},
+ CellLabel->"Out[29]=",
+ CellID->932633812,ExpressionUUID->"296aec99-41de-4096-8dbf-bdbfe6edcfdb"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -503,110 +519,114 @@ Cell[BoxData[
      "\[IndentingNewLine]", 
      RowBox[{"Chain", "[", 
       RowBox[{"i3", ",", 
-       RowBox[{"H", "[", "3", "]"}], ",", "o2"}], "]"}], ","}], 
+       RowBox[{"H", "[", "3", "]"}], ",", "o2"}], "]"}]}], 
     "\[IndentingNewLine]", "}"}]}]}]], "Input",
  CellChangeTimes->{{3.8835568272725*^9, 3.883556867081602*^9}, {
-  3.883783852463397*^9, 3.8837838791076508`*^9}},
- CellLabel->"In[589]:=",
+   3.883783852463397*^9, 3.8837838791076508`*^9}, 3.8839223454630404`*^9},
+ CellLabel->"In[30]:=",
  CellID->1648793681,ExpressionUUID->"e290ec74-602d-4dfa-908f-07707deb24cb"],
 
 Cell[BoxData[
- GraphicsBox[
-  NamespaceBox["NetworkGraphics",
-   DynamicModuleBox[{Typeset`graph = HoldComplete[
-     Graph[{
-       $CellContext`X[1], 
-       $CellContext`Z[1], 
-       $CellContext`H[
-       3], $CellContext`i1, $CellContext`i2, $CellContext`i3, \
-$CellContext`o2, $CellContext`o1}, {{{4, 2}, {5, 2}, {6, 3}, {3, 7}, {1, 8}, {
-       2, 1}}, Null}, {EdgeStyle -> {
-         Arrowheads[{{0.05, 0.58}}]}, GraphLayout -> 
-       "SpringElectricalEmbedding", ImageSize -> Medium, 
-       VertexLabels -> {$CellContext`H[3] -> 
-         Placed["H", Center], $CellContext`Z[1] -> 
-         Placed[Rational[1, 3] Pi, Center], $CellContext`X[1] -> 
-         Placed[Rational[1, 4] Pi, Center]}, 
-       VertexShapeFunction -> {$CellContext`H[3] -> "Square"}, 
-       VertexSize -> {$CellContext`H[3] -> 0.4, $CellContext`o1 -> 
-         0.4, $CellContext`X[1] -> 0.4, $CellContext`Z[1] -> 
-         0.4, $CellContext`i1 -> 0.4, $CellContext`i2 -> 0.4, $CellContext`i3 -> 
-         0.4, $CellContext`o2 -> 0.4}, 
-       VertexStyle -> {$CellContext`Z[1] -> 
-         RGBColor[0, 1, 0], $CellContext`o2 -> Directive[
-           GrayLevel[0, 0], 
-           EdgeForm[]], $CellContext`X[1] -> 
-         RGBColor[1, 0, 0], $CellContext`i3 -> Directive[
-           GrayLevel[0, 0], 
-           EdgeForm[]], $CellContext`o1 -> Directive[
-           GrayLevel[0, 0], 
-           EdgeForm[]], $CellContext`i2 -> Directive[
-           GrayLevel[0, 0], 
-           EdgeForm[]], $CellContext`i1 -> Directive[
-           GrayLevel[0, 0], 
-           EdgeForm[]], $CellContext`H[3] -> RGBColor[1, 1, 0]}}]]}, 
-    TagBox[GraphicsGroupBox[{
-       {Hue[0.6, 0.7, 0.5], Opacity[0.7], Arrowheads[{{0.05, 0.58}}], 
-        ArrowBox[{{{1.3339347389278404`, -1.1219165701870037`}, {
-         0.3848763132454516, -1.1219565108774339`}}, {{
-         2.442821738368828, -1.1219545912187283`}, {
-         1.3339347389278404`, -1.1219165701870037`}}, {{
-         1.384187069703312, -2.6287926350654507`}, {
-         0.38487631324545146`, -2.6287926350654542`}}, {{
-         3.0685312555748676`, -1.8590400085745475`}, {
-         2.442821738368828, -1.1219545912187283`}}, {{
-         3.068574104573145, -0.3848763132454516}, {
-         2.442821738368828, -1.1219545912187283`}}, {{
-         2.3848758385158826`, -2.6287926350654542`}, {
-         1.384187069703312, -2.6287926350654507`}}}, 0.02792743582839699]}, 
-       {Hue[0.6, 0.2, 0.8], EdgeForm[{GrayLevel[0], Opacity[0.7]}], {
-         {RGBColor[1, 0, 0], 
-          DiskBox[{1.3339347389278404, -1.1219165701870037}, 
-           0.18981168530456635]}, InsetBox[
-          FractionBox["\[Pi]", "4"], {1.3339347389278404, -1.1219165701870037},
-          
-          BaseStyle->"Graphics"]}, {
-         {RGBColor[0, 1, 0], 
-          DiskBox[{2.442821738368828, -1.1219545912187283}, 
-           0.18981168530456635]}, InsetBox[
-          FractionBox["\[Pi]", "3"], {2.442821738368828, -1.1219545912187283},
-          
-          BaseStyle->"Graphics"]}, {
-         {RGBColor[1, 1, 0], 
-          RectangleBox[{1.216706159739772, -2.7962735450289906}, \
-{1.5516679796668522, -2.4613117251019108}]}, 
-         InsetBox["\<\"H\"\>", {1.384187069703312, -2.6287926350654507},
-          BaseStyle->"Graphics"]}, 
-        {GrayLevel[0], Opacity[0], EdgeForm[None], 
-         DiskBox[{3.0685312555748676, -1.8590400085745475}, 
-          0.18981168530456635]}, 
-        {GrayLevel[0], Opacity[0], EdgeForm[None], 
-         DiskBox[{3.068574104573145, -0.3848763132454516}, 
-          0.18981168530456635]}, 
-        {GrayLevel[0], Opacity[0], EdgeForm[None], 
-         DiskBox[{2.3848758385158826, -2.6287926350654542}, 
-          0.18981168530456635]}, 
-        {GrayLevel[0], Opacity[0], EdgeForm[None], 
-         DiskBox[{0.38487631324545146, -2.6287926350654542}, 
-          0.18981168530456635]}, 
-        {GrayLevel[0], Opacity[0], EdgeForm[None], 
-         DiskBox[{0.3848763132454516, -1.1219565108774339}, 
-          0.18981168530456635]}}}],
-     MouseAppearanceTag["NetworkGraphics"]],
-    AllowKernelInitialization->False]],
-  AxesStyle->{},
-  DefaultBaseStyle->"NetworkGraphics",
-  FormatType->TraditionalForm,
-  FrameStyle->{},
-  FrameTicks->None,
-  ImageSize->Medium,
-  PlotRangePadding->Automatic]], "Output",
+ InterpretationBox[
+  GraphicsBox[
+   NamespaceBox["NetworkGraphics",
+    DynamicModuleBox[{Typeset`graph = HoldComplete[
+      Graph[{$CellContext`i1, $CellContext`i2, $CellContext`i3, \
+$CellContext`o1, $CellContext`o2, 
+        $CellContext`H[3], 
+        $CellContext`X[1][Rational[1, 4] Pi], 
+        $CellContext`Z[1][Rational[1, 3] Pi]}, {{{1, 8}, {2, 8}, {8, 7}, {7, 
+        4}, {3, 6}, {6, 5}}, Null}, {EdgeStyle -> {
+          Arrowheads[{{0.05, 0.58}}]}, ImageSize -> Medium, 
+        VertexLabels -> {$CellContext`H[3] -> 
+          Placed["H", Center], $CellContext`Z[1][Rational[1, 3] Pi] -> 
+          Placed[Rational[1, 3] Pi, Center], $CellContext`X[1][
+           Rational[1, 4] Pi] -> Placed[Rational[1, 4] Pi, Center]}, 
+        VertexShapeFunction -> {$CellContext`H[3] -> "Square"}, 
+        VertexSize -> {$CellContext`H[3] -> 0.4, $CellContext`o1 -> 
+          0.4, $CellContext`Z[1][Rational[1, 3] Pi] -> 
+          0.4, $CellContext`X[1][Rational[1, 4] Pi] -> 0.4, $CellContext`i1 -> 
+          0.4, $CellContext`i2 -> 0.4, $CellContext`i3 -> 
+          0.4, $CellContext`o2 -> 0.4}, 
+        VertexStyle -> {$CellContext`X[1][Rational[1, 4] Pi] -> 
+          RGBColor[1, 0, 0], $CellContext`o2 -> Directive[
+            GrayLevel[0, 0], 
+            EdgeForm[]], $CellContext`i3 -> Directive[
+            GrayLevel[0, 0], 
+            EdgeForm[]], $CellContext`o1 -> Directive[
+            GrayLevel[0, 0], 
+            EdgeForm[]], $CellContext`i2 -> Directive[
+            GrayLevel[0, 0], 
+            EdgeForm[]], $CellContext`i1 -> Directive[
+            GrayLevel[0, 0], 
+            EdgeForm[]], $CellContext`Z[1][Rational[1, 3] Pi] -> 
+          RGBColor[0, 1, 0], $CellContext`H[3] -> RGBColor[1, 1, 0]}}]]}, 
+     TagBox[GraphicsGroupBox[{
+        {Hue[0.6, 0.7, 0.5], Opacity[0.7], Arrowheads[{{0.05, 0.58}}], 
+         ArrowBox[{{0.37501000000000007`, -0.37501000000000007`}, {
+          1.37501, -1.37501}}, 0.030239520958083826`], 
+         ArrowBox[{{1.37501, -0.37501000000000007`}, {1.37501, -1.37501}}, 
+          0.030239520958083826`], 
+         ArrowBox[{{2.12503, -0.37501000000000007`}, {2.12503, -1.37501}}, 
+          0.030239520958083826`], 
+         ArrowBox[{{2.12503, -1.37501}, {2.12503, -2.37501}}, 
+          0.030239520958083826`], 
+         ArrowBox[{{1.37501, -2.37501}, {1.37501, -3.37501}}, 
+          0.030239520958083826`], 
+         ArrowBox[{{1.37501, -1.37501}, {1.37501, -2.37501}}, 
+          0.030239520958083826`]}, 
+        {Hue[0.6, 0.2, 0.8], EdgeForm[{GrayLevel[0], Opacity[0.7]}], 
+         {GrayLevel[0], Opacity[0], EdgeForm[None], 
+          DiskBox[{0.37501000000000007, -0.37501000000000007}, 
+           0.15000400000000003]}, 
+         {GrayLevel[0], Opacity[0], EdgeForm[None], 
+          DiskBox[{1.37501, -0.37501000000000007}, 0.15000400000000003]}, 
+         {GrayLevel[0], Opacity[0], EdgeForm[None], 
+          DiskBox[{2.12503, -0.37501000000000007}, 0.15000400000000003]}, 
+         {GrayLevel[0], Opacity[0], EdgeForm[None], 
+          DiskBox[{1.37501, -3.37501}, 0.15000400000000003]}, 
+         {GrayLevel[0], Opacity[0], EdgeForm[None], 
+          DiskBox[{2.12503, -2.37501}, 0.15000400000000003]}, {
+          {RGBColor[1, 1, 0], 
+           RectangleBox[{1.9926735205880002, -1.507366479412}, \
+{2.257386479412, -1.242653520588}]}, 
+          InsetBox["\<\"H\"\>", {2.12503, -1.37501},
+           BaseStyle->"Graphics"]}, {
+          {RGBColor[1, 0, 0], 
+           DiskBox[{1.37501, -2.37501}, 0.15000400000000003]}, InsetBox[
+           FractionBox["\[Pi]", "4"], {1.37501, -2.37501},
+           BaseStyle->"Graphics"]}, {
+          {RGBColor[0, 1, 0], 
+           DiskBox[{1.37501, -1.37501}, 0.15000400000000003]}, InsetBox[
+           FractionBox["\[Pi]", "3"], {1.37501, -1.37501},
+           BaseStyle->"Graphics"]}}}],
+      MouseAppearanceTag["NetworkGraphics"]],
+     AllowKernelInitialization->False]],
+   AxesStyle->{},
+   DefaultBaseStyle->"NetworkGraphics",
+   FormatType->TraditionalForm,
+   FrameStyle->{},
+   FrameTicks->None,
+   ImageSize->Medium,
+   PlotRangePadding->Automatic],
+  MaZX`ZXObject[{$CellContext`i1, $CellContext`i2, $CellContext`i3, \
+$CellContext`o1, $CellContext`o2, 
+    $CellContext`H[3], 
+    $CellContext`X[1][Rational[1, 4] Pi], 
+    $CellContext`Z[1][
+    Rational[1, 3] Pi]}, {$CellContext`i1 -> $CellContext`Z[1][
+     Rational[1, 3] Pi], $CellContext`i2 -> $CellContext`Z[1][
+     Rational[1, 3] Pi], $CellContext`Z[1][
+     Rational[1, 3] Pi] -> $CellContext`X[1][
+     Rational[1, 4] Pi], $CellContext`X[1][
+     Rational[1, 4] Pi] -> $CellContext`o1, $CellContext`i3 -> $CellContext`H[
+     3], $CellContext`H[3] -> $CellContext`o2}]]], "Output",
  CellChangeTimes->{{3.883556867536448*^9, 3.883556873916872*^9}, 
    3.883704824057816*^9, 3.8837151360073977`*^9, {3.88378375465801*^9, 
    3.8837837638684263`*^9}, 3.883783800355647*^9, 3.883783880347637*^9, 
-   3.883812288372678*^9},
- CellLabel->"Out[589]=",
- CellID->1428532435,ExpressionUUID->"f635b22f-4017-4da4-9e68-1b5bdb21485f"]
+   3.883812288372678*^9, {3.883922345949355*^9, 3.883922363441111*^9}},
+ CellLabel->"Out[30]=",
+ CellID->826082938,ExpressionUUID->"b66507a5-6957-4dcd-84ea-26aec75dfcf4"]
 }, Open  ]],
 
 Cell["This tries to get the layers of the whole graph.", "ExampleText",
@@ -620,7 +640,7 @@ Cell[BoxData[
   RowBox[{"Graph", "@", "obj"}], "]"}]], "Input",
  CellChangeTimes->{{3.883556875648633*^9, 3.883556883291692*^9}, {
   3.883812296019204*^9, 3.883812307923451*^9}},
- CellLabel->"In[593]:=",
+ CellLabel->"In[31]:=",
  CellID->1939541138,ExpressionUUID->"90ef4353-07cb-4db3-a673-7949283863bc"],
 
 Cell[BoxData[
@@ -634,21 +654,35 @@ Cell[BoxData[
       SubscriptBox["H", "3"],
       $CellContext`H[3]], ",", 
      InterpretationBox[
-      SubscriptBox["Z", "1"],
-      $CellContext`Z[1]]}], "}"}], ",", 
+      TagBox[
+       FormBox[
+        RowBox[{
+         SubscriptBox["Z", "1"], "(", 
+         FractionBox["\[Pi]", "3"], ")"}],
+        TraditionalForm],
+       TraditionalForm,
+       Editable->True],
+      $CellContext`Z[1][Rational[1, 3] Pi]]}], "}"}], ",", 
    RowBox[{"{", 
     RowBox[{"o2", ",", 
      InterpretationBox[
-      SubscriptBox["X", "1"],
-      $CellContext`X[1]]}], "}"}], ",", 
+      TagBox[
+       FormBox[
+        RowBox[{
+         SubscriptBox["X", "1"], "(", 
+         FractionBox["\[Pi]", "4"], ")"}],
+        TraditionalForm],
+       TraditionalForm,
+       Editable->True],
+      $CellContext`X[1][Rational[1, 4] Pi]]}], "}"}], ",", 
    RowBox[{"{", "o1", "}"}]}], "}"}]], "Output",
  CellChangeTimes->{
   3.8835568836190777`*^9, 3.883704825402443*^9, 3.8837151366640244`*^9, 
    3.883783765644884*^9, {3.8837838011210623`*^9, 3.883783815419952*^9}, {
    3.883783883051402*^9, 3.883783909015359*^9}, {3.883812290675108*^9, 
-   3.883812308244849*^9}},
- CellLabel->"Out[593]=",
- CellID->2130661440,ExpressionUUID->"f53e2abf-c7d6-457b-9d26-921f066365b3"]
+   3.883812308244849*^9}, 3.883922365909596*^9},
+ CellLabel->"Out[31]=",
+ CellID->1176531438,ExpressionUUID->"44a16250-c50a-4eef-8783-b6e8d5e52785"]
 }, Open  ]],
 
 Cell["\<\
@@ -664,149 +698,162 @@ Cell[BoxData[
   RowBox[{"ZXLayers", "[", "obj", "]"}], "//", "TableForm"}]], "Input",
  CellChangeTimes->{{3.883783810712281*^9, 3.883783811452918*^9}, {
   3.883783895185693*^9, 3.883783896751794*^9}},
- CellLabel->"In[594]:=",
+ CellLabel->"In[32]:=",
  CellID->655411065,ExpressionUUID->"7c5dd592-993e-4bf6-a61a-9cf0616e3f77"],
 
 Cell[BoxData[
  TagBox[
-  RowBox[{"\[LeftAssociation]", 
-   RowBox[{
-    RowBox[{
-     GraphicsBox[
-      NamespaceBox["NetworkGraphics",
-       DynamicModuleBox[{Typeset`graph = HoldComplete[
-         Graph[{$CellContext`i1, 
-           $CellContext`Z[1], $CellContext`i2, 
-           $CellContext`X[1], $CellContext`o1}, {{{1, 2}, {3, 2}, {2, 4}, {4, 
-           5}}, Null}, {EdgeStyle -> {
-             Arrowheads[{{0.05, 0.58}}]}, GraphLayout -> 
-           "SpringElectricalEmbedding", ImageSize -> Medium, 
-           VertexLabels -> {$CellContext`Z[1] -> 
-             Placed[Rational[1, 3] Pi, Center], $CellContext`X[1] -> 
-             Placed[Rational[1, 4] Pi, Center]}, 
-           VertexSize -> {$CellContext`o1 -> 0.4, $CellContext`X[1] -> 
-             0.4, $CellContext`Z[1] -> 0.4, $CellContext`i1 -> 
-             0.4, $CellContext`i2 -> 0.4}, 
-           VertexStyle -> {$CellContext`Z[1] -> 
-             RGBColor[0, 1, 0], $CellContext`X[1] -> 
-             RGBColor[1, 0, 0], $CellContext`i1 -> Directive[
-               GrayLevel[0, 0], 
-               EdgeForm[]], $CellContext`i2 -> Directive[
-               GrayLevel[0, 0], 
-               EdgeForm[]], $CellContext`o1 -> Directive[
-               GrayLevel[0, 0], 
-               EdgeForm[]]}}]]}, 
-        TagBox[GraphicsGroupBox[{
-           {Hue[0.6, 0.7, 0.5], Opacity[0.7], Arrowheads[{{0.05, 0.58}}], 
-            ArrowBox[{{{0.0013488224960149786`, 0.}, {0.6265653477257058, 
-             0.7371759213346638}}, {{0.6265653477257058, 
-             0.7371759213346638}, {1.7355631647683472`, 
-             0.7375047690294372}}, {{0., 1.4746680083784258`}, {
-             0.6265653477257058, 0.7371759213346638}}, {{1.7355631647683472`, 
-             0.7375047690294372}, {2.683888467526201, 0.7378177616446602}}}, 
-             0.027928856512657918`]}, 
-           {Hue[0.6, 0.2, 0.8], EdgeForm[{GrayLevel[0], Opacity[0.7]}], 
-            {GrayLevel[0], Opacity[0], EdgeForm[None], 
-             DiskBox[{0.0013488224960149786, 0.}, 0.18966507088182075]}, {
-             {RGBColor[0, 1, 0], 
-              DiskBox[{0.6265653477257058, 0.7371759213346638}, 
-               0.18966507088182075]}, InsetBox[
-              FractionBox["\[Pi]", "3"], {0.6265653477257058, 0.7371759213346638},
-              
-              BaseStyle->"Graphics"]}, 
-            {GrayLevel[0], Opacity[0], EdgeForm[None], 
-             DiskBox[{0., 1.4746680083784258}, 0.18966507088182075]}, {
-             {RGBColor[1, 0, 0], 
-              DiskBox[{1.7355631647683472, 0.7375047690294372}, 
-               0.18966507088182075]}, InsetBox[
-              FractionBox["\[Pi]", "4"], {1.7355631647683472, 0.7375047690294372},
-              
-              BaseStyle->"Graphics"]}, 
-            {GrayLevel[0], Opacity[0], EdgeForm[None], 
-             DiskBox[{2.683888467526201, 0.7378177616446602}, 
-              0.18966507088182075]}}}],
-         MouseAppearanceTag["NetworkGraphics"]],
-        AllowKernelInitialization->False]],
-      AxesStyle->{},
-      DefaultBaseStyle->"NetworkGraphics",
-      FormatType->TraditionalForm,
-      FrameStyle->{},
-      FrameTicks->None,
-      ImageSize->Medium,
-      PlotRangePadding->Automatic], "\[Rule]", 
-     RowBox[{"{", 
+  TagBox[GridBox[{
+     {
       RowBox[{
+       GraphicsBox[
+        NamespaceBox["NetworkGraphics",
+         DynamicModuleBox[{Typeset`graph = HoldComplete[
+           Graph[{$CellContext`i1, 
+             $CellContext`Z[1][Rational[1, 3] Pi], $CellContext`i2, 
+             $CellContext`X[1][Rational[1, 4] Pi], $CellContext`o1}, {{{1, 
+             2}, {3, 2}, {2, 4}, {4, 5}}, Null}, {EdgeStyle -> {
+               Arrowheads[{{0.05, 0.58}}]}, GraphLayout -> {"Dimension" -> 2},
+              ImageSize -> 100, 
+             VertexLabels -> {$CellContext`Z[1][Rational[1, 3] Pi] -> 
+               Placed[Rational[1, 3] Pi, Center], $CellContext`X[1][
+                Rational[1, 4] Pi] -> Placed[Rational[1, 4] Pi, Center]}, 
+             VertexSize -> {$CellContext`o1 -> 
+               0.4, $CellContext`Z[1][Rational[1, 3] Pi] -> 
+               0.4, $CellContext`X[1][Rational[1, 4] Pi] -> 
+               0.4, $CellContext`i1 -> 0.4, $CellContext`i2 -> 0.4}, 
+             VertexStyle -> {$CellContext`X[1][Rational[1, 4] Pi] -> 
+               RGBColor[1, 0, 0], $CellContext`o1 -> Directive[
+                 GrayLevel[0, 0], 
+                 EdgeForm[]], $CellContext`i2 -> Directive[
+                 GrayLevel[0, 0], 
+                 EdgeForm[]], $CellContext`i1 -> Directive[
+                 GrayLevel[0, 0], 
+                 EdgeForm[]], $CellContext`Z[1][Rational[1, 3] Pi] -> 
+               RGBColor[0, 1, 0]}}]]}, 
+          TagBox[GraphicsGroupBox[{
+             {Hue[0.6, 0.7, 0.5], Opacity[0.7], Arrowheads[{{0.05, 0.58}}], 
+              ArrowBox[{{0., 3.}, {1., 2.}}, 0.030239520958083826`], 
+              ArrowBox[{{1., 2.}, {1., 1.}}, 0.030239520958083826`], 
+              ArrowBox[{{1., 3.}, {1., 2.}}, 0.030239520958083826`], 
+              ArrowBox[{{1., 1.}, {1., 0.}}, 0.030239520958083826`]}, 
+             {Hue[0.6, 0.2, 0.8], EdgeForm[{GrayLevel[0], Opacity[0.7]}], 
+              {GrayLevel[0], Opacity[0], EdgeForm[None], 
+               DiskBox[{0., 3.}, 0.2]}, {
+               {RGBColor[0, 1, 0], DiskBox[{1., 2.}, 0.2]}, InsetBox[
+                FractionBox["\[Pi]", "3"], {1., 2.},
+                BaseStyle->"Graphics"]}, 
+              {GrayLevel[0], Opacity[0], EdgeForm[None], 
+               DiskBox[{1., 3.}, 0.2]}, {
+               {RGBColor[1, 0, 0], DiskBox[{1., 1.}, 0.2]}, InsetBox[
+                FractionBox["\[Pi]", "4"], {1., 1.},
+                BaseStyle->"Graphics"]}, 
+              {GrayLevel[0], Opacity[0], EdgeForm[None], 
+               DiskBox[{1., 0.}, 0.2]}}}],
+           MouseAppearanceTag["NetworkGraphics"]],
+          AllowKernelInitialization->False]],
+        AxesStyle->{},
+        DefaultBaseStyle->"NetworkGraphics",
+        FormatType->TraditionalForm,
+        FrameStyle->{},
+        FrameTicks->None,
+        ImageSize->100,
+        PlotRangePadding->Automatic], "\[Rule]", 
        RowBox[{"{", 
-        RowBox[{"i1", ",", "i2"}], "}"}], ",", 
-       RowBox[{"{", 
-        InterpretationBox[
-         SubscriptBox["Z", "1"],
-         $CellContext`Z[1]], "}"}], ",", 
-       RowBox[{"{", 
-        InterpretationBox[
-         SubscriptBox["X", "1"],
-         $CellContext`X[1]], "}"}], ",", 
-       RowBox[{"{", "o1", "}"}]}], "}"}]}], ",", 
-    RowBox[{
-     GraphicsBox[
-      NamespaceBox["NetworkGraphics",
-       DynamicModuleBox[{Typeset`graph = HoldComplete[
-         Graph[{$CellContext`o2, 
-           $CellContext`H[3], $CellContext`i3}, {{{2, 1}, {3, 2}}, Null}, {
-          EdgeStyle -> {
-             Arrowheads[{{0.05, 0.58}}]}, GraphLayout -> 
-           "SpringElectricalEmbedding", ImageSize -> Medium, 
-           VertexLabels -> {$CellContext`H[3] -> Placed["H", Center]}, 
-           VertexShapeFunction -> {$CellContext`H[3] -> "Square"}, 
-           VertexSize -> {$CellContext`H[3] -> 0.4, $CellContext`i3 -> 
-             0.4, $CellContext`o2 -> 0.4}, 
-           VertexStyle -> {$CellContext`o2 -> Directive[
-               GrayLevel[0, 0], 
-               EdgeForm[]], $CellContext`i3 -> Directive[
-               GrayLevel[0, 0], 
-               EdgeForm[]], $CellContext`H[3] -> RGBColor[1, 1, 0]}}]]}, 
-        TagBox[GraphicsGroupBox[{
-           {Hue[0.6, 0.7, 0.5], Opacity[0.7], Arrowheads[{{0.05, 0.58}}], 
-            ArrowBox[{{{1.0003055128773508`, 4.665773677819736*^-18}, {0., 
-             0.}}, {{1.9999999066333527`, 4.956174529136317*^-18}, {
-             1.0003055128773508`, 4.665773677819736*^-18}}}, 
-             0.022611464210583382`]}, 
-           {Hue[0.6, 0.2, 0.8], EdgeForm[{GrayLevel[0], Opacity[0.7]}], 
-            {GrayLevel[0], Opacity[0], EdgeForm[None], 
-             DiskBox[{0., 0.}, 0.1999388787512004]}, {
-             {RGBColor[1, 1, 0], 
-              RectangleBox[{0.8238888433945929, -0.17641666948275794}, \
-{1.1767221823601088, 0.17641666948275794}]}, 
-             InsetBox["\<\"H\"\>", {1.0003055128773508, 4.665773677819736*^-18},
-              
-              BaseStyle->"Graphics"]}, 
-            {GrayLevel[0], Opacity[0], EdgeForm[None], 
-             DiskBox[{1.9999999066333527, 4.956174529136317*^-18}, 
-              0.1999388787512004]}}}],
-         MouseAppearanceTag["NetworkGraphics"]],
-        AllowKernelInitialization->False]],
-      AxesStyle->{},
-      DefaultBaseStyle->"NetworkGraphics",
-      FormatType->TraditionalForm,
-      FrameStyle->{},
-      FrameTicks->None,
-      ImageSize->Medium,
-      PlotRangePadding->Automatic], "\[Rule]", 
-     RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"i1", ",", "i2"}], "}"}], ",", 
+         RowBox[{"{", 
+          InterpretationBox[
+           TagBox[
+            FormBox[
+             RowBox[{
+              SubscriptBox["Z", "1"], "(", 
+              FractionBox["\[Pi]", "3"], ")"}],
+             TraditionalForm],
+            TraditionalForm,
+            Editable->True],
+           $CellContext`Z[1][Rational[1, 3] Pi]], "}"}], ",", 
+         RowBox[{"{", 
+          InterpretationBox[
+           TagBox[
+            FormBox[
+             RowBox[{
+              SubscriptBox["X", "1"], "(", 
+              FractionBox["\[Pi]", "4"], ")"}],
+             TraditionalForm],
+            TraditionalForm,
+            Editable->True],
+           $CellContext`X[1][Rational[1, 4] Pi]], "}"}], ",", 
+         RowBox[{"{", "o1", "}"}]}], "}"}]}]},
+     {
       RowBox[{
-       RowBox[{"{", "i3", "}"}], ",", 
+       GraphicsBox[
+        NamespaceBox["NetworkGraphics",
+         DynamicModuleBox[{Typeset`graph = HoldComplete[
+           Graph[{$CellContext`o2, 
+             $CellContext`H[3], $CellContext`i3}, {{{2, 1}, {3, 2}}, Null}, {
+            EdgeStyle -> {
+               Arrowheads[{{0.05, 0.58}}]}, GraphLayout -> {"Dimension" -> 2},
+              ImageSize -> 100, 
+             VertexLabels -> {$CellContext`H[3] -> Placed["H", Center]}, 
+             VertexShapeFunction -> {$CellContext`H[3] -> "Square"}, 
+             VertexSize -> {$CellContext`i3 -> 0.4, $CellContext`H[3] -> 
+               0.4, $CellContext`o2 -> 0.4}, 
+             VertexStyle -> {$CellContext`i3 -> Directive[
+                 GrayLevel[0, 0], 
+                 EdgeForm[]], $CellContext`o2 -> Directive[
+                 GrayLevel[0, 0], 
+                 EdgeForm[]], $CellContext`H[3] -> RGBColor[1, 1, 0]}}]]}, 
+          TagBox[GraphicsGroupBox[{
+             {Hue[0.6, 0.7, 0.5], Opacity[0.7], Arrowheads[{{0.05, 0.58}}], 
+              ArrowBox[{{{1., 2.4492935982947064`*^-16}, {2., 0.}}, {{0., 
+               3.6739403974420594`*^-16}, {1., 2.4492935982947064`*^-16}}}, 
+               0.02261146496815286]}, 
+             {Hue[0.6, 0.2, 0.8], EdgeForm[{GrayLevel[0], Opacity[0.7]}], 
+              {GrayLevel[0], Opacity[0], EdgeForm[None], 
+               DiskBox[{2., 0.}, 0.2]}, {
+               {RGBColor[1, 1, 0], 
+                RectangleBox[{0.8235294, -0.17647059999999978}, \
+{1.1764706, 0.17647060000000028}]}, 
+               InsetBox["\<\"H\"\>", {1., 2.4492935982947064*^-16},
+                BaseStyle->"Graphics"]}, 
+              {GrayLevel[0], Opacity[0], EdgeForm[None], 
+               DiskBox[{0., 3.6739403974420594*^-16}, 0.2]}}}],
+           MouseAppearanceTag["NetworkGraphics"]],
+          AllowKernelInitialization->False]],
+        AxesStyle->{},
+        DefaultBaseStyle->"NetworkGraphics",
+        FormatType->TraditionalForm,
+        FrameStyle->{},
+        FrameTicks->None,
+        ImageSize->100,
+        PlotRangePadding->Automatic], "\[Rule]", 
        RowBox[{"{", 
-        InterpretationBox[
-         SubscriptBox["H", "3"],
-         $CellContext`H[3]], "}"}], ",", 
-       RowBox[{"{", "o2", "}"}]}], "}"}]}]}], "\[RightAssociation]"}],
+        RowBox[{
+         RowBox[{"{", "i3", "}"}], ",", 
+         RowBox[{"{", 
+          InterpretationBox[
+           SubscriptBox["H", "3"],
+           $CellContext`H[3]], "}"}], ",", 
+         RowBox[{"{", "o2", "}"}]}], "}"}]}]}
+    },
+    GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Baseline}}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.5599999999999999]}, 
+        Offset[0.27999999999999997`]}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}}],
+   Column],
   Function[BoxForm`e$, 
    TableForm[BoxForm`e$]]]], "Output",
  CellChangeTimes->{{3.88378381196025*^9, 3.883783816094261*^9}, {
    3.8837838895870667`*^9, 3.8837839096093197`*^9}, 3.88378396178227*^9, {
-   3.88381230199184*^9, 3.883812309926032*^9}},
- CellLabel->"Out[594]//TableForm=",
- CellID->529699394,ExpressionUUID->"e51d4dc6-65d9-4685-98e9-3ab040a95bc4"]
+   3.88381230199184*^9, 3.883812309926032*^9}, 3.883922367477434*^9},
+ CellLabel->"Out[32]//TableForm=",
+ CellID->766150088,ExpressionUUID->"5fb364d9-781f-4b15-b165-4ead8a3f18ce"]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]],
@@ -1005,14 +1052,14 @@ ExpressionUUID->"b87e9dce-1256-4b75-adb5-baf36c0ba6a8"
 (*CellTagsOutline
 CellTagsIndex->{
  "ExtendedExamples"->{
-  Cell[32100, 815, 488, 13, 58, "ExtendedExamplesSection",ExpressionUUID->"b664b22e-492b-4e24-98fc-8dca194c6ef4",
+  Cell[33909, 862, 488, 13, 58, "ExtendedExamplesSection",ExpressionUUID->"b664b22e-492b-4e24-98fc-8dca194c6ef4",
    CellTags->"ExtendedExamples",
    CellID->1110277160]}
  }
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"ExtendedExamples", 38563, 1006}
+ {"ExtendedExamples", 40372, 1053}
  }
 *)
 (*NotebookFileOutline
@@ -1061,112 +1108,112 @@ Cell[8253, 241, 442, 12, 73, "PrimaryExamplesSection",ExpressionUUID->"f69dc28a-
 Cell[8698, 255, 239, 4, 24, "ExampleText",ExpressionUUID->"4cda7961-f6f1-42e1-950e-737510787f35",
  CellID->1258165529],
 Cell[CellGroupData[{
-Cell[8962, 263, 566, 15, 27, "Input",ExpressionUUID->"ebb9bcbb-28d4-4dab-8303-d13fccc01ee6",
+Cell[8962, 263, 565, 15, 27, "Input",ExpressionUUID->"ebb9bcbb-28d4-4dab-8303-d13fccc01ee6",
  CellID->690573494],
-Cell[9531, 280, 3180, 66, 233, "Output",ExpressionUUID->"c8473c94-b55a-4f41-83d4-e39bc5ae1ef8",
- CellID->1533581332]
+Cell[9530, 280, 3296, 65, 442, "Output",ExpressionUUID->"d75bbc35-0841-49e8-a8ac-4a215eac9b46",
+ CellID->593023841]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[12748, 351, 257, 5, 27, "Input",ExpressionUUID->"586c4ed7-2631-49b8-88ea-383fc585e6f4",
+Cell[12863, 350, 256, 5, 27, "Input",ExpressionUUID->"586c4ed7-2631-49b8-88ea-383fc585e6f4",
  CellID->1512042646],
-Cell[13008, 358, 656, 19, 26, "Output",ExpressionUUID->"d536e7cc-ba68-48a8-a779-5227029ed0de",
- CellID->1281005577]
+Cell[13122, 357, 1047, 33, 39, "Output",ExpressionUUID->"466fc535-8f9d-40a9-8a56-fde92567f0c0",
+ CellID->1667460327]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[13701, 382, 230, 4, 27, "Input",ExpressionUUID->"da789c25-c74e-4dd8-b1a2-68512aa1758a",
+Cell[14206, 395, 229, 4, 27, "Input",ExpressionUUID->"da789c25-c74e-4dd8-b1a2-68512aa1758a",
  CellID->1475772934],
-Cell[13934, 388, 3637, 81, 276, "Output",ExpressionUUID->"efb7635d-4581-4b73-aae2-f32b807d7efa",
- CellID->789998716]
+Cell[14438, 401, 3622, 84, 248, "Output",ExpressionUUID->"296aec99-41de-4096-8dbf-bdbfe6edcfdb",
+ CellID->932633812]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[17608, 474, 242, 5, 20, "ExampleDelimiter",ExpressionUUID->"7ae79675-077b-4876-acb6-fbac82ad51bd",
+Cell[18097, 490, 242, 5, 20, "ExampleDelimiter",ExpressionUUID->"7ae79675-077b-4876-acb6-fbac82ad51bd",
  CellID->402244792],
-Cell[17853, 481, 219, 2, 24, "ExampleText",ExpressionUUID->"37b7c2b6-1200-4579-801a-3b1a68b1e4cc",
+Cell[18342, 497, 219, 2, 24, "ExampleText",ExpressionUUID->"37b7c2b6-1200-4579-801a-3b1a68b1e4cc",
  CellID->137454258],
 Cell[CellGroupData[{
-Cell[18097, 487, 875, 23, 85, "Input",ExpressionUUID->"e290ec74-602d-4dfa-908f-07707deb24cb",
+Cell[18586, 503, 894, 23, 85, "Input",ExpressionUUID->"e290ec74-602d-4dfa-908f-07707deb24cb",
  CellID->1648793681],
-Cell[18975, 512, 4595, 96, 320, "Output",ExpressionUUID->"f635b22f-4017-4da4-9e68-1b5bdb21485f",
- CellID->1428532435]
+Cell[19483, 528, 5093, 100, 442, "Output",ExpressionUUID->"b66507a5-6957-4dcd-84ea-26aec75dfcf4",
+ CellID->826082938]
 }, Open  ]],
-Cell[23585, 611, 213, 2, 24, "ExampleText",ExpressionUUID->"91898c4f-f722-4eeb-90fd-b8fff04663da",
+Cell[24591, 631, 213, 2, 24, "ExampleText",ExpressionUUID->"91898c4f-f722-4eeb-90fd-b8fff04663da",
  CellID->1703187609],
 Cell[CellGroupData[{
-Cell[23823, 617, 306, 6, 27, "Input",ExpressionUUID->"90ef4353-07cb-4db3-a673-7949283863bc",
+Cell[24829, 637, 305, 6, 27, "Input",ExpressionUUID->"90ef4353-07cb-4db3-a673-7949283863bc",
  CellID->1939541138],
-Cell[24132, 625, 875, 25, 26, "Output",ExpressionUUID->"f53e2abf-c7d6-457b-9d26-921f066365b3",
- CellID->2130661440]
+Cell[25137, 645, 1280, 39, 39, "Output",ExpressionUUID->"44a16250-c50a-4eef-8783-b6e8d5e52785",
+ CellID->1176531438]
 }, Open  ]],
-Cell[25022, 653, 251, 4, 24, "ExampleText",ExpressionUUID->"d9ca8260-4b13-4ce9-abb7-b81df80a3f4c",
+Cell[26432, 687, 251, 4, 24, "ExampleText",ExpressionUUID->"d9ca8260-4b13-4ce9-abb7-b81df80a3f4c",
  CellID->2140511081],
 Cell[CellGroupData[{
-Cell[25298, 661, 310, 6, 27, "Input",ExpressionUUID->"7c5dd592-993e-4bf6-a61a-9cf0616e3f77",
+Cell[26708, 695, 309, 6, 27, "Input",ExpressionUUID->"7c5dd592-993e-4bf6-a61a-9cf0616e3f77",
  CellID->655411065],
-Cell[25611, 669, 6428, 139, 351, "Output",ExpressionUUID->"e51d4dc6-65d9-4685-98e9-3ab040a95bc4",
- CellID->529699394]
+Cell[27020, 703, 6828, 152, 274, "Output",ExpressionUUID->"5fb364d9-781f-4b15-b165-4ead8a3f18ce",
+ CellID->766150088]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[32100, 815, 488, 13, 58, "ExtendedExamplesSection",ExpressionUUID->"b664b22e-492b-4e24-98fc-8dca194c6ef4",
+Cell[33909, 862, 488, 13, 58, "ExtendedExamplesSection",ExpressionUUID->"b664b22e-492b-4e24-98fc-8dca194c6ef4",
  CellTags->"ExtendedExamples",
  CellID->1110277160],
-Cell[32591, 830, 241, 5, 35, "ExampleSection",ExpressionUUID->"b1feb588-6b88-42a5-ae0f-9a7b6290af51",
+Cell[34400, 877, 241, 5, 35, "ExampleSection",ExpressionUUID->"b1feb588-6b88-42a5-ae0f-9a7b6290af51",
  CellID->942819337],
-Cell[32835, 837, 265, 5, 23, "ExampleSection",ExpressionUUID->"33927314-cb6b-4db8-8289-794d078ee15d",
+Cell[34644, 884, 265, 5, 23, "ExampleSection",ExpressionUUID->"33927314-cb6b-4db8-8289-794d078ee15d",
  CellID->1830249393],
 Cell[CellGroupData[{
-Cell[33125, 846, 243, 5, 23, "ExampleSection",ExpressionUUID->"f0c61929-ce48-400f-97d7-2fe1c235ddae",
+Cell[34934, 893, 243, 5, 23, "ExampleSection",ExpressionUUID->"f0c61929-ce48-400f-97d7-2fe1c235ddae",
  CellID->445788523],
-Cell[33371, 853, 247, 5, 26, "ExampleSubsection",ExpressionUUID->"98dfbfc1-d3c3-4cbd-95e0-23522acf7f48",
+Cell[35180, 900, 247, 5, 26, "ExampleSubsection",ExpressionUUID->"98dfbfc1-d3c3-4cbd-95e0-23522acf7f48",
  CellID->1944745325],
-Cell[33621, 860, 246, 5, 22, "ExampleSubsection",ExpressionUUID->"df7c1a68-9773-4e09-94d1-9367397a9d64",
+Cell[35430, 907, 246, 5, 22, "ExampleSubsection",ExpressionUUID->"df7c1a68-9773-4e09-94d1-9367397a9d64",
  CellID->633569935]
 }, Open  ]],
-Cell[33882, 868, 249, 5, 35, "ExampleSection",ExpressionUUID->"396221ce-8305-4f34-8d5b-380b4b8ac6a9",
+Cell[35691, 915, 249, 5, 35, "ExampleSection",ExpressionUUID->"396221ce-8305-4f34-8d5b-380b4b8ac6a9",
  CellID->1185975719],
-Cell[34134, 875, 259, 5, 23, "ExampleSection",ExpressionUUID->"0a536396-4e6b-4dfa-8ac8-eaf6befed285",
+Cell[35943, 922, 259, 5, 23, "ExampleSection",ExpressionUUID->"0a536396-4e6b-4dfa-8ac8-eaf6befed285",
  CellID->1898181426],
-Cell[34396, 882, 252, 5, 23, "ExampleSection",ExpressionUUID->"90848772-7ead-436d-a256-daf440e747a8",
+Cell[36205, 929, 252, 5, 23, "ExampleSection",ExpressionUUID->"90848772-7ead-436d-a256-daf440e747a8",
  CellID->1865650597],
-Cell[34651, 889, 256, 5, 23, "ExampleSection",ExpressionUUID->"f48a34c7-9fcc-45c5-828c-4950a94f025b",
+Cell[36460, 936, 256, 5, 23, "ExampleSection",ExpressionUUID->"f48a34c7-9fcc-45c5-828c-4950a94f025b",
  CellID->580853932],
-Cell[34910, 896, 250, 5, 23, "ExampleSection",ExpressionUUID->"2f42f8b7-a1b3-4f2f-a0f8-d7affbd0e7d8",
+Cell[36719, 943, 250, 5, 23, "ExampleSection",ExpressionUUID->"2f42f8b7-a1b3-4f2f-a0f8-d7affbd0e7d8",
  CellID->2098859509]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[35197, 906, 110, 1, 72, "MetadataSection",ExpressionUUID->"8481c71f-af0f-42bd-9285-0b02d8240c37",
+Cell[37006, 953, 110, 1, 72, "MetadataSection",ExpressionUUID->"8481c71f-af0f-42bd-9285-0b02d8240c37",
  CellID->965382141],
-Cell[35310, 909, 595, 14, 26, "History",ExpressionUUID->"afe46ba6-6869-4a58-b146-b4855a34114e",
+Cell[37119, 956, 595, 14, 26, "History",ExpressionUUID->"afe46ba6-6869-4a58-b146-b4855a34114e",
  CellID->938690702],
 Cell[CellGroupData[{
-Cell[35930, 927, 485, 13, 21, "CategorizationSection",ExpressionUUID->"69485277-c2aa-44ec-b24c-7b6f7a15935d",
+Cell[37739, 974, 485, 13, 21, "CategorizationSection",ExpressionUUID->"69485277-c2aa-44ec-b24c-7b6f7a15935d",
  CellID->1159757652],
-Cell[36418, 942, 135, 2, 35, "Categorization",ExpressionUUID->"a2d6921e-3d2c-405a-93f4-57f49de39a17",
+Cell[38227, 989, 135, 2, 35, "Categorization",ExpressionUUID->"a2d6921e-3d2c-405a-93f4-57f49de39a17",
  CellID->1485276992],
-Cell[36556, 946, 132, 2, 35, "Categorization",ExpressionUUID->"ee782f5f-e490-4bda-ba28-1f4474415671",
+Cell[38365, 993, 132, 2, 35, "Categorization",ExpressionUUID->"ee782f5f-e490-4bda-ba28-1f4474415671",
  CellID->171561116],
-Cell[36691, 950, 130, 2, 35, "Categorization",ExpressionUUID->"7176b321-474e-4f48-8436-fda48a695bd8",
+Cell[38500, 997, 130, 2, 35, "Categorization",ExpressionUUID->"7176b321-474e-4f48-8436-fda48a695bd8",
  CellID->1504622338],
-Cell[36824, 954, 138, 2, 35, "Categorization",ExpressionUUID->"1e7b75e3-93de-4fa3-b5ba-ab771fa6a2ac",
+Cell[38633, 1001, 138, 2, 35, "Categorization",ExpressionUUID->"1e7b75e3-93de-4fa3-b5ba-ab771fa6a2ac",
  CellID->1567691341]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[36999, 961, 110, 1, 31, "KeywordsSection",ExpressionUUID->"2e5f3199-3abb-4f4e-8e36-701bdb5ec91b",
+Cell[38808, 1008, 110, 1, 31, "KeywordsSection",ExpressionUUID->"2e5f3199-3abb-4f4e-8e36-701bdb5ec91b",
  CellID->695063000],
-Cell[37112, 964, 175, 2, 21, "Keywords",ExpressionUUID->"d4b6bd96-6580-4a71-b87b-da83264aca52",
+Cell[38921, 1011, 175, 2, 21, "Keywords",ExpressionUUID->"d4b6bd96-6580-4a71-b87b-da83264aca52",
  CellID->1760284967]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[37324, 971, 120, 1, 31, "TemplatesSection",ExpressionUUID->"e07febc1-5eda-42f7-aef3-3fe44688e45c",
+Cell[39133, 1018, 120, 1, 31, "TemplatesSection",ExpressionUUID->"e07febc1-5eda-42f7-aef3-3fe44688e45c",
  CellID->1374719297],
-Cell[37447, 974, 148, 2, 70, "Template",ExpressionUUID->"9935664e-f7d9-41ab-8b14-0e4e3cc3b1ee",
+Cell[39256, 1021, 148, 2, 70, "Template",ExpressionUUID->"9935664e-f7d9-41ab-8b14-0e4e3cc3b1ee",
  CellID->130666606],
-Cell[37598, 978, 138, 2, 70, "Template",ExpressionUUID->"38a4c954-7314-47b4-8f9d-481500fa11f3",
+Cell[39407, 1025, 138, 2, 70, "Template",ExpressionUUID->"38a4c954-7314-47b4-8f9d-481500fa11f3",
  CellID->1385359808],
-Cell[37739, 982, 135, 2, 70, "Template",ExpressionUUID->"324451d9-72b4-4400-a67b-fd74e71e702a",
+Cell[39548, 1029, 135, 2, 70, "Template",ExpressionUUID->"324451d9-72b4-4400-a67b-fd74e71e702a",
  CellID->724592282],
-Cell[37877, 986, 138, 2, 70, "Template",ExpressionUUID->"554a6b45-b2e1-4c9f-9b3e-77aabc631453",
+Cell[39686, 1033, 138, 2, 70, "Template",ExpressionUUID->"554a6b45-b2e1-4c9f-9b3e-77aabc631453",
  CellID->1990205084]
 }, Closed]]
 }, Open  ]]
