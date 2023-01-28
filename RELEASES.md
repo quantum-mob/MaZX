@@ -1,5 +1,9 @@
 # Select Release Notes
 
+## v0.3.0
+
+- The data structure of ZXObject has been changed.
+
 ## v0.2.0
 
 - ZXForm to convert quantum circuit to a ZX diagram.
