@@ -1,5 +1,10 @@
 # Select Release Notes
 
+## v0.3.3
+
+- Bug fixesin ZXDiagram, ZXMultiply, ZXLayers, Matrix[_ZXObject].
+- One can drop phase value specification in options of ZXDiagram involving spiders.
+
 ## v0.3.2
 
 - ZXDiagram has been improved.

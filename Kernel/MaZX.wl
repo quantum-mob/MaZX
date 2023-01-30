@@ -9,8 +9,8 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 4.31 $"][[2]], " (",
-  StringSplit["$Date: 2023-01-30 22:08:00+09 $"][[2]], ") ",
+  StringSplit["$Revision: 4.32 $"][[2]], " (",
+  StringSplit["$Date: 2023-01-30 23:08:01+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
@@ -368,7 +368,8 @@ Graph[obj_ZXObject, ___?OptionQ] = obj (* fallback *)
 ZXObject /:
 Graph[obj:ZXObject[vv_List, ee_List, opts___?OptionQ], more___?OptionQ] :=
   Module[
-    { zz, xx, hh, bb, rr },
+    { rules = ruleSpiders[vv],
+      zz, xx, hh, bb, rr },
 
     zz = Select[vv, ZSpiderQ];
     xx = Select[vv, XSpiderQ];
@@ -381,8 +382,8 @@ Graph[obj:ZXObject[vv_List, ee_List, opts___?OptionQ], more___?OptionQ] :=
     rr = DeleteCases[vv, _?ZXSpeciesQ];
     
     Graph[ vv, ee,
-      Sequence @@ FilterRules[{more}, Options @ Graph],
-      Sequence @@ FilterRules[{opts}, Options @ Graph],
+      Sequence @@ FilterRules[{more} /. rules, Options @ Graph],
+      Sequence @@ FilterRules[{opts} /. rules, Options @ Graph],
       VertexShapeFunction -> Join[
         Thread[bb -> "Diamond"],
         Thread[hh -> "Square"] ], 
