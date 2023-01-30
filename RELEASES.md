@@ -1,5 +1,10 @@
 # Select Release Notes
 
+## v0.3.2
+
+- ZXDiagram has been improved.
+- ZXDiagram allows a -> b -> c -> ..., which is equivalent to Chain[a, b, c, ...].
+
 ## v0.3.0
 
 - The data structure of ZXObject has been changed.
