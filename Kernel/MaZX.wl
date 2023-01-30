@@ -9,8 +9,8 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 4.21 $"][[2]], " (",
-  StringSplit["$Date: 2023-01-30 12:47:22+09 $"][[2]], ") ",
+  StringSplit["$Revision: 4.24 $"][[2]], " (",
+  StringSplit["$Date: 2023-01-30 17:20:15+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
@@ -237,26 +237,55 @@ ZXLinks[expr_] := ReplaceAll[
  ]
 
 
-ZXSpiders::usage = "ZXSpiders[expr] returns the association of all Z and X spiders in ZX expression expr."
+ZSpiders::usage = "ZSpiders[obj] returns the association of all Z spiders in ZX expression expr."
+
+ZSpiders[obj:ZXObject[_List, _List, ___?OptionQ]] :=
+  Cases[VertexList @ obj, _?ZSpiderQ]
+
+
+XSpiders::usage = "XSpiders[expr] returns the list of all X spiders in ZX expression expr."
+
+ZSpiders[obj:ZXObject[_List, _List, ___?OptionQ]] :=
+  Union @ Cases[VertexList @ obj, _?ZSpiderQ]
+
+ZSpiders[expr_] :=
+  Union @ Cases[{expr}, _?ZSpiderQ, Infinity, Heads -> False]
+
+
+XSpiders::usage = "XSpiders[expr] returns the list of all X spiders in ZX expression expr."
+
+XSpiders[obj:ZXObject[_List, _List, ___?OptionQ]] :=
+  Union @ Cases[VertexList @ obj, _?XSpiderQ]
+
+XSpiders[expr_] :=
+  Union @ Cases[{expr}, _?XSpiderQ, Infinity, Heads -> False]
+
+
+ZXSpiders::usage = "ZXSpiders[expr] returns the list of all Z and X spiders in ZX expression expr."
 
 ZXSpiders[obj:ZXObject[_List, _List, ___?OptionQ]] :=
-  Cases[VertexList @ obj, _?ZXSpiderQ]
+  Union @ Cases[VertexList @ obj, _?ZXSpiderQ]
+
+ZXSpiders[expr_] :=
+  Union @ Cases[{expr}, _?ZXSpiderQ, Infinity, Heads -> False]
 
 
 ZXDiamonds::usage = "ZXDiamonds returns the list of all diamonds in ZX expression expr."
 
 ZXDiamonds[obj:ZXObject[_List, _List, ____?OptionQ]] :=
-  ZXDiamonds[VertexList @ obj]
+  Union @ Cases[VertexList @ obj, _?ZXDiamondQ]
 
 ZXDiamonds[expr_] :=
-  Union @ Cases[{expr}, Z_?ZXDiamondQ :> Base[Z], Infinity, Heads -> False]
+  Union @ Cases[{expr}, _?ZXDiamondQ, Infinity, Heads -> False]
 
 
 ZXHadamards::usage = "ZXHadamards returns the list of all Hadamard gates in ZX expression expr."
 
-ZXHadamards[expr_] :=
-  Union @ Cases[{expr}, Z_?ZXHadamardQ :> Base[Z], Infinity, Heads -> False]
+ZXHadamards[obj:ZXObject[_List, _List, ____?OptionQ]] :=
+  Union @ Cases[VertexList @ obj, _?ZXHadamardQ]
 
+ZXHadamards[expr_] :=
+  Union @ Cases[{expr}, _?ZXHadamardQ, Infinity, Heads -> False]
 
 checkHadamards[g_Graph][hh_List] := Module[
   { dd },
@@ -344,10 +373,10 @@ Graph[obj:ZXObject[vv_List, ee_List, opts___?OptionQ], more___?OptionQ] :=
     zz = Select[vv, ZSpiderQ];
     xx = Select[vv, XSpiderQ];
 
-    hh = Cases[vv, _?ZXHadamardQ];
+    hh = Select[vv, ZXHadamardQ];
     checkHadamards[minimalGraph @ obj][hh];
 
-    bb = ZXDiamonds[vv];
+    bb = Select[vv, ZXDiamonds];
 
     rr = DeleteCases[vv, _?ZXSpeciesQ];
     
@@ -486,7 +515,6 @@ Matrix[obj_ZXObject, ___] := Matrix @ ExpressionFor[obj]
 ZXObject /:
 Matrix[obj:ZXObject[_List, _List, ___?OptionQ], ___] := Module[
   { graph = minimalGraph[obj],
-    spiders = ZXSpiders[obj],
     clusters },
   clusters = Subgraph[graph, #]& /@ WeaklyConnectedComponents[graph];
   ( CircleTimes @@ Map[theMatrixByCluster, clusters] ) *
