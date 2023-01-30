@@ -9,8 +9,8 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 4.24 $"][[2]], " (",
-  StringSplit["$Date: 2023-01-30 17:20:15+09 $"][[2]], ") ",
+  StringSplit["$Revision: 4.31 $"][[2]], " (",
+  StringSplit["$Date: 2023-01-30 22:08:00+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
@@ -376,7 +376,7 @@ Graph[obj:ZXObject[vv_List, ee_List, opts___?OptionQ], more___?OptionQ] :=
     hh = Select[vv, ZXHadamardQ];
     checkHadamards[minimalGraph @ obj][hh];
 
-    bb = Select[vv, ZXDiamonds];
+    bb = Select[vv, ZXDiamondQ];
 
     rr = DeleteCases[vv, _?ZXSpeciesQ];
     
@@ -401,7 +401,7 @@ Graph[obj:ZXObject[vv_List, ee_List, opts___?OptionQ], more___?OptionQ] :=
       VertexLabels -> Join[
         (# -> Placed[PhaseValue @ #, Center])& /@ Join[zz, xx],
         (# -> Placed["H", Center])& /@ hh ],
-      EdgeStyle -> Arrowheads[{{0.05, 0.58}}],
+      EdgeStyle -> Arrowheads[{{Medium, 0.6}}],
       ImageSize -> Medium
      ]
    ]
@@ -456,7 +456,7 @@ VertexList[obj_ZXObject] = obj (* fallback *)
 
 ZXObject /:
 ExpressionFor[obj:ZXObject[_List, _List, ___]] := Module[
-  { graph = Graph @ obj },
+  { graph = minimalGraph @ obj },
   Apply[ ZXMultiply,
     Map[theExpression[graph], Flatten @ Reverse @ ZXLayers @ graph]
    ] * Power[Sqrt[2], Length @ ZXDiamonds @ obj] // Garner
@@ -679,7 +679,7 @@ ZXTimes[
 
 (**** <ZXMultiply> ****)
 
-ZXMultiply::usage = "ZXMultiply[a, b, ...] ..."
+ZXMultiply::usage = "ZXMultiply[a,b,\[Ellipsis]] represents the non-commutative multiplication of operators a, b, \[Ellipsis] for ZX expressions."
 
 SetAttributes[ZXMultiply, Listable]
 
@@ -702,6 +702,7 @@ Format[ZXMultiply[a:Ket[], b_Bra]] := Interpretation[
   ZXMultiply[a, b]
  ]
 
+
 ZXMultiply /: NonCommutativeQ[_ZXMultiply] = True
 
 ZXMultiply /: Matrix[ZXMultiply[Ket[a_], Bra[b_]], ___] :=
@@ -720,9 +721,15 @@ theKet[3] = {1, -1} / Sqrt[2] (* Ket[-] *)
 theKet[mm:(0|1|2|3|4)..] := CircleTimes @@ Map[theKet, {mm}]
 
 
-ZXMultiply[pre___, z_?CommutativeQ, post___] := ZXMultiply[pre, post]
+ZXMultiply[] = 1
 
-ZXMultiply[pre___, z_?CommutativeQ op_, post___] := z * ZXMultiply[pre, op, post]
+ZXMultiply[Ket[], Bra[]] = 1
+
+
+ZXMultiply[pre___, z_?CommutativeQ, post___] := z * ZXMultiply[pre, post]
+
+ZXMultiply[pre___, z_?CommutativeQ op_, post___] :=
+  z * ZXMultiply[pre, op, post]
 
 ZXMultiply[pre___, expr_Plus, post___] := Total @ ZXMultiply[pre, List @@ expr, post]
 
@@ -828,9 +835,11 @@ ZXLayers[graph_Graph] := Module[
     NestList[VertexOutComponent[graph, #, {1}]&, in, Length @ vv],
     {}
    ];
-  Reverse @ FoldPairList[
-    {Complement[#2, #1], Union[#2, #1]}&,
-    {}, Reverse @ layers ] /. {} -> Nothing
+  DeleteCases[
+    Reverse @ FoldPairList[
+      {Complement[#2, #1], Union[#2, #1]}&,
+      {}, Reverse @ layers ],
+    {} ]
  ]
 
 ZXLayers[obj_ZXObject] := With[
