@@ -9,8 +9,8 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 4.6 $"][[2]], " (",
-  StringSplit["$Date: 2023-01-29 04:13:47+09 $"][[2]], ") ",
+  StringSplit["$Revision: 4.21 $"][[2]], " (",
+  StringSplit["$Date: 2023-01-30 12:47:22+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
@@ -26,8 +26,8 @@ ClearAll["`*"];
 { ZXSpeciesQ, ZXSpiderQ,
   ZSpider, ZSpiders, ZSpiderQ,
   XSpider, XSpiders, XSpiderQ,
-  Hadamard, Hadamards, HadamardQ,
-  Diamond, Diamonds, DiamondQ };
+  Hadamard, ZXHadamards, ZXHadamardQ,
+  Diamond, ZXDiamonds, ZXDiamondQ };
 
 { ZXSpiders, ZXLinks };
 
@@ -186,18 +186,18 @@ setXSpider[X_Symbol] := (
  )
 
 setDiamond[B_Symbol] := (
-  DiamondQ[B] ^= True;
-  DiamondQ[B[___]] ^= True;
+  ZXDiamondQ[B] ^= True;
+  ZXDiamondQ[B[___]] ^= True;
  )
 
 setHadamard[H_Symbol] := (
-  HadamardQ[H] ^= True;
-  HadamardQ[H[___]] ^= True;
+  ZXHadamardQ[H] ^= True;
+  ZXHadamardQ[H[___]] ^= True;
  )
 
 
 ZXSpeciesQ[_] = False;
-ZSpiderQ[_] = XSpiderQ[_] = HadamardQ[_] = DiamondQ[_] = False;
+ZSpiderQ[_] = XSpiderQ[_] = ZXHadamardQ[_] = ZXDiamondQ[_] = False;
 ZXSpiderQ[S_] := Or[ZSpiderQ @ S, XSpiderQ @ S]
 
 
@@ -214,14 +214,14 @@ ZXInputs::usage = "ZXInputs[...] ..."
 
 ZXOutputs::usage = "ZXOutputs[...] ..."
 
-ZXInputs[obj_ZXObject] := ZXInputs[theGraph @ obj]
+ZXInputs[obj_ZXObject] := ZXInputs[minimalGraph @ obj]
 
 ZXInputs[graph_Graph] := Sort @ Select[
   DeleteCases[VertexList @ graph, _?ZXSpeciesQ],
   VertexInDegree[graph, #] == 0 &
  ]
 
-ZXOutputs[obj_ZXObject] := ZXOutputs[theGraph @ obj]
+ZXOutputs[obj_ZXObject] := ZXOutputs[minimalGraph @ obj]
 
 ZXOutputs[graph_Graph] := Sort @ Select[
   DeleteCases[VertexList @ graph, _?ZXSpeciesQ],
@@ -242,44 +242,20 @@ ZXSpiders::usage = "ZXSpiders[expr] returns the association of all Z and X spide
 ZXSpiders[obj:ZXObject[_List, _List, ___?OptionQ]] :=
   Cases[VertexList @ obj, _?ZXSpiderQ]
 
-ruleSpiders[expr_] := Module[
-  { spiders },
-  spiders = Merge[
-    Cases[
-      Flatten[expr /. obj_ZXObject :> ZXSpiders[obj]],
-      Z_?ZXSpiderQ :> Rule[Base[Z], Base[Z][PhaseValue @ Z]],
-      Infinity, Heads -> False ],
-    Identity
-   ];
-  checkSpiders[spiders];
-  Prepend[
-    Normal @ KeySort @ Map[First, spiders /. {} -> {0}],
-    Global`v:(_Symbol?ZXSpiderQ[___][_]) :> Global`v
-   ]
- ]
 
-checkSpiders[spiders_Association] := Module[
-  { new },
-  new = Select[Union /@ spiders, (Length[#] < 1)&];
-  If[Length[new] > 0, Message[ZXDiagram::none, Normal @ new]];
-  new = Select[Union /@ spiders, (Length[#] > 1)&];
-  If[Length[new] > 0, Message[ZXDiagram::many, Normal @ new]];
- ]
+ZXDiamonds::usage = "ZXDiamonds returns the list of all diamonds in ZX expression expr."
+
+ZXDiamonds[obj:ZXObject[_List, _List, ____?OptionQ]] :=
+  ZXDiamonds[VertexList @ obj]
+
+ZXDiamonds[expr_] :=
+  Union @ Cases[{expr}, Z_?ZXDiamondQ :> Base[Z], Infinity, Heads -> False]
 
 
-Diamonds::usage = "Diamonds returns the list of all diamonds in ZX expression expr."
+ZXHadamards::usage = "ZXHadamards returns the list of all Hadamard gates in ZX expression expr."
 
-Diamonds[obj:ZXObject[_List, _List, ____?OptionQ]] :=
-  Diamonds[VertexList @ obj]
-
-Diamonds[expr_] :=
-  Union @ Cases[{expr}, Z_?DiamondQ :> Base[Z], Infinity, Heads -> False]
-
-
-Hadamards::usage = "Hadamards returns the list of all Hadamard gates in ZX expression expr."
-
-Hadamards[expr_] :=
-  Union @ Cases[{expr}, Z_?HadamardQ :> Base[Z], Infinity, Heads -> False]
+ZXHadamards[expr_] :=
+  Union @ Cases[{expr}, Z_?ZXHadamardQ :> Base[Z], Infinity, Heads -> False]
 
 
 checkHadamards[g_Graph][hh_List] := Module[
@@ -307,17 +283,45 @@ ZXDiagram::many = "Different phase values for the same spiders: ``. The first va
 ZXDiagram::hadamard = "Wrong arities for some Hadamard gates: ``. Every Hadamard gate should have one and only one input and output link."
 
 ZXDiagram[spec_List, opts___?OptionQ] := Module[
-  { past, spiders, vertex, edges },
-  past = Cases[spec, _ZXObject];
-  spiders = ruleSpiders[Flatten @ spec];
-  edges = Cases[Flatten @ spec, _Rule] /. spiders;
-  vertices = Union @ Flatten[
-    Flatten @ spec /.
-      {_?ZXObject -> Nothing, Rule -> List} /.
-      spiders
+  { args, past, rules, vtxes, edges },
+  past = Cases[spec, _ZXObject, Infinity, Heads -> False];
+  args = DeleteCases[spec, _ZXObject, Infinity, Heads -> False];
+  args = Flatten[args /. Rule -> flatChain /. flatChain -> Chain];
+  rules= ruleSpiders[{past, args}];
+  edges = Cases[args, _Rule] /. rules;
+  vtxes = Union @ Flatten[
+    args /. {_?ZXObject -> Nothing, Rule -> List} /. rules
    ];
-  Join[ZXObject[vertices, edges, opts], Sequence @@ past]
+  Join[ZXObject[vtxes, edges, opts], Sequence @@ past]
  ]
+
+ruleSpiders[expr_] := Module[
+  { spiders },
+  spiders = Merge[
+    Cases[
+      Flatten[expr /. obj_ZXObject :> ZXSpiders[obj]],
+      v_?ZXSpiderQ :> Rule[Base[v], Base[v][PhaseValue @ v]],
+      Infinity, Heads -> False ],
+    Identity
+   ];
+  checkSpiders[spiders];
+  Prepend[
+    Normal @ KeySort @ Map[First, spiders /. {} -> {0}],
+    Global`v:(_Symbol?ZXSpiderQ[___][_]) :> Global`v
+   ]
+ ]
+
+checkSpiders[spiders_Association] := Module[
+  { new },
+  new = Select[Union /@ spiders, (Length[#] < 1)&];
+  If[Length[new] > 0, Message[ZXDiagram::none, Normal @ new]];
+  new = Select[Union /@ spiders, (Length[#] > 1)&];
+  If[Length[new] > 0, Message[ZXDiagram::many, Normal @ new]];
+ ]
+
+flatChain::ugate = "flatChain is a wrapper for Chain."
+
+SetAttributes[flatChain, Flat]
 
 (**** </ZXDiagram> ****)
 
@@ -330,40 +334,22 @@ Format[obj:ZXObject[_List, _List, ___?OptionQ]] :=
   Interpretation[Graph @ obj, obj]
 
 ZXObject /:
-Join[obj:ZXObject[_List, _List, ___?OptionQ]..] := Module[
-  { data, opts },
-  {data, opts} = Transpose @ Map[
-    TakeDrop[#, 2]&,
-    {obj} /. ZXObject -> List
-   ];
-  data = Catenate /@ Transpose @ data;
-  opts = Catenate @ opts;
-  ZXObject[Union @ Flatten @ First @ data, Last @ data, Sequence @@ opts]
- ]
+Graph[obj_ZXObject, ___?OptionQ] = obj (* fallback *)
 
 ZXObject /:
 Graph[obj:ZXObject[vv_List, ee_List, opts___?OptionQ], more___?OptionQ] :=
   Module[
-    { graph, gates, sizes, labels, zz, xx, hh, bb, ss },
-    graph = theGraph[obj];
-    sizes = Map[
-      (# -> If[MemberQ[AdjacencyList[graph, #], #], 0.01, 0.4])&,
-      VertexList[graph]
-     ];
+    { zz, xx, hh, bb, rr },
 
-    zz = Select[ZXSpiders @ obj, ZSpiderQ];
-    xx = Select[ZXSpiders @ obj, XSpiderQ];
+    zz = Select[vv, ZSpiderQ];
+    xx = Select[vv, XSpiderQ];
 
-    bb = Cases[VertexList @ graph, _?DiamondQ];
-    hh = Cases[VertexList @ graph, _?HadamardQ];
-    checkHadamards[graph][hh];
+    hh = Cases[vv, _?ZXHadamardQ];
+    checkHadamards[minimalGraph @ obj][hh];
 
-    labels = Join[
-      (# -> Placed[PhaseValue @ #, Center])& /@ Join[zz, xx],
-      (# -> Placed["H", Center])& /@ hh
-     ];
+    bb = ZXDiamonds[vv];
 
-    gates = Union[zz, xx, hh, bb];
+    rr = DeleteCases[vv, _?ZXSpeciesQ];
     
     Graph[ vv, ee,
       Sequence @@ FilterRules[{more}, Options @ Graph],
@@ -376,18 +362,37 @@ Graph[obj:ZXObject[vv_List, ee_List, opts___?OptionQ], more___?OptionQ] :=
         Thread[xx -> Red], 
         Thread[hh -> Yellow],
         Thread[bb -> Black],
-        Thread[Complement[VertexList @ graph, gates] ->
-            Directive[Transparent, EdgeForm[]]] ],
-      VertexSize -> sizes, 
-      VertexLabels -> labels,
+        Thread[rr -> Directive[EdgeForm[], Transparent]] ],
+      VertexSize -> Join[
+       Thread[zz -> 0.4],
+       Thread[xx -> 0.4],
+       Thread[hh -> 0.4],
+       Thread[bb -> 0.1],
+       Thread[rr -> 0.01] ], 
+      VertexLabels -> Join[
+        (# -> Placed[PhaseValue @ #, Center])& /@ Join[zz, xx],
+        (# -> Placed["H", Center])& /@ hh ],
       EdgeStyle -> Arrowheads[{{0.05, 0.58}}],
       ImageSize -> Medium
      ]
    ]
 
 (* Minimal graph with only skeleton. *)
-theGraph[ZXObject[vv_List, ee_List, ___?OptionQ], more___?OptionQ] :=
-  Graph[vv, ee, more];
+minimalGraph[ZXObject[vv_List, ee_List, ___?OptionQ], more___?OptionQ] :=
+  Graph[DeleteCases[vv, _?ZXDiamondQ], ee, more];
+
+
+ZXObject /:
+Join[obj:ZXObject[_List, _List, ___?OptionQ]..] := Module[
+  { data, opts },
+  {data, opts} = Transpose @ Map[
+    TakeDrop[#, 2]&,
+    {obj} /. ZXObject -> List
+   ];
+  data = Flatten /@ Transpose @ data;
+  opts = Flatten @ opts;
+  ZXObject[Union @ First @ data, Last @ data, Sequence @@ opts]
+ ]
 
 (**** </ZXObject> ****)
 
@@ -425,7 +430,7 @@ ExpressionFor[obj:ZXObject[_List, _List, ___]] := Module[
   { graph = Graph @ obj },
   Apply[ ZXMultiply,
     Map[theExpression[graph], Flatten @ Reverse @ ZXLayers @ graph]
-   ] * Power[Sqrt[2], Length @ Diamonds @ obj] // Garner
+   ] * Power[Sqrt[2], Length @ ZXDiamonds @ obj] // Garner
  ]
 
 ZXObject /:
@@ -445,14 +450,14 @@ theExpression[g_Graph][v:_?XSpiderQ[k___][p_]] := With[
     ZXMultiply[Ket[ out -> 3], Bra[in -> 3]] * Exp[I*p]
  ]
 
-theExpression[g_Graph][v_?HadamardQ] := With[
+theExpression[g_Graph][v_?ZXHadamardQ] := With[
   { in = incomingEdges[g][v],
     out = outgoingEdges[g][v] },
   ZXMultiply[Ket[out -> 2], Bra[in -> 0]] +
     ZXMultiply[Ket[out -> 3], Bra[in -> 1]]
  ]
 
-theExpression[g_Graph][v_?DiamondQ] = Sqrt[2]
+theExpression[g_Graph][v_?ZXDiamondQ] = Sqrt[2]
 
 theExpression[g_Graph][v_] := Module[
   { in = incomingEdges[g][v],
@@ -479,12 +484,13 @@ Matrix[obj_ZXObject, ___] := Matrix @ ExpressionFor[obj]
  *)
 
 ZXObject /:
-Matrix[obj_ZXObject, ___] := Module[
-  { graph = theGraph[obj],
+Matrix[obj:ZXObject[_List, _List, ___?OptionQ], ___] := Module[
+  { graph = minimalGraph[obj],
     spiders = ZXSpiders[obj],
     clusters },
   clusters = Subgraph[graph, #]& /@ WeaklyConnectedComponents[graph];
-  CircleTimes @@ Map[theMatrixByCluster, clusters]
+  ( CircleTimes @@ Map[theMatrixByCluster, clusters] ) *
+    Power[Sqrt[2], Length @ ZXDiamonds @ obj]
  ]
 
 
@@ -504,7 +510,8 @@ theMatrixByCluster[graph_Graph] := Module[
 theH[obs_, oo_, ii_, ibs_] := Module[
   { cc = Intersection[obs, ibs],
     aa, bb, pp },
-  pp = Pattern[#, Blank[]]& /@ Table[Unique[], Length @ cc];
+  pp = Pattern[#, Blank[]] & /@ Symbol /@
+    (StringJoin["x", #] & /@ ToString /@ Range[Length @ cc]);
   aa = Thread[FirstPosition[obs, #] & /@ cc -> pp];
   bb = Thread[FirstPosition[ibs, #] & /@ cc -> pp];
   ArrayReshape[
@@ -535,7 +542,8 @@ theH[obs_, oo_, ii_, ibs_] := Module[
 theZ[obs_, oo_, phi_, ii_, ibs_] := Module[
   { cc = Intersection[obs, ibs],
     aa, bb, pp },
-  pp = Pattern[#, Blank[]]& /@ Table[Unique[], Length @ cc];
+  pp = Pattern[#, Blank[]] & /@ Symbol /@
+    (StringJoin["x", #] & /@ ToString /@ Range[Length @ cc]);
   aa = Thread[FirstPosition[obs, #] & /@ cc -> pp];
   bb = Thread[FirstPosition[ibs, #] & /@ cc -> pp];
   ArrayReshape[
@@ -578,13 +586,13 @@ theMatrix[g_Graph][obs_, v_?XSpiderQ, ibs_] := With[
  ]
 
 
-theMatrix[g_Graph][obs_, v_?HadamardQ, ibs_] := With[
+theMatrix[g_Graph][obs_, v_?ZXHadamardQ, ibs_] := With[
   { in = First @ incomingEdges[g][v],
     out = First @ outgoingEdges[g][v] },
   theH[obs, out, in, ibs]
  ]
 
-theMatrix[g_Graph][_, v_?DiamondQ, _] = {{Sqrt[2]}}
+theMatrix[g_Graph][_, v_?ZXDiamondQ, _] = {{Sqrt[2]}}
 
 theMatrix[g_Graph][obs_, v_, ibs_] := With[
   { in = incomingEdges[g][v],
@@ -600,83 +608,6 @@ theMatrix[g_Graph][obs_, v_, ibs_] := With[
  ]
 
 (**** </Matrix> ****)
-
-
-(**** <OldMatrix> ****)
-
-ZXObject /:
-OldMatrix[obj_ZXObject, ___] := Module[
-  { graph = theGraph[obj],
-    spiders = ZXSpiders[obj],
-    clusters },
-  clusters = Subgraph[graph, #]& /@ WeaklyConnectedComponents[graph];
-  CircleTimes @@ Map[theMatrixByCluster[spiders], clusters]
- ]
-
-
-oldMatrixByCluster[spiders_Association][graph_Graph] := Module[
-  { in, out, mat },
-  in  = Sort @ Select[
-    DeleteCases[VertexList @ graph, _?ZXSpeciesQ],
-    VertexInDegree[graph, #] == 0 &
-   ];
-  out = Sort @ Select[
-    DeleteCases[VertexList @ graph, _?ZXSpeciesQ],
-    VertexOutDegree[graph, #] == 0 &
-   ];
-  vv = Flatten[ZXLayers @ graph] /.
-    KeyValueMap[Rule[#1, #1[#2]]&, spiders];
-  mat = oldMatrix[graph] /@ vv;
-  {out, mat, in} = Fold[ ZXTimes[#2, #1]&,
-    {in, One @ Power[2, Length @ in], in},
-    Append[mat, {out, One @ Power[2, Length @ out], out}]
-   ];
-  mat
- ]
-
-
-oldZ[out_Integer, in_Integer, phi_] := SparseArray @ {
-  {1, 1} -> 1,
-  {Power[2, out], Power[2, in]} -> Exp[I*phi]
- }
-
-oldX[out_Integer, in_Integer, phi_] :=
-  Apply[ThePauli, Table[6, out]] . theZ[out, in, phi] .
-  Apply[ThePauli, Table[6, in]]
-
-
-oldMatrix[g_Graph][v_?ZSpiderQ[k___][p_]] := With[
-  { in = incomingEdges[g][v @ k],
-    out = outgoingEdges[g][v @ k] },
-  {out, oldZ[Length @ out, Length @ in, p], in}
- ]
-
-oldMatrix[g_Graph][v_?XSpiderQ[k___][p_]] := With[
-  { in = incomingEdges[g][v @ k],
-    out = outgoingEdges[g][v @ k] },
-  {out, oldX[Length @ out, Length @ in, p], in}
- ]
-
-oldMatrix[g_Graph][v_?HadamardQ] := With[
-  { in = incomingEdges[g][v],
-    out = outgoingEdges[g][v] },
-  {out, ThePauli[6], in}
- ]
-
-oldMatrix[g_Graph][v_?DiamondQ] = { {}, {{Sqrt[2]}}, {} }
-
-oldMatrix[g_Graph][v_] := Module[
-  { in = incomingEdges[g][v],
-    out = outgoingEdges[g][v] },
-  Which[
-    in == {}, (* input vertex *)
-    {out, oldZ[Length @ out, 1, 0], {v}},
-    out == {}, (* output vertex *)
-    {{v}, oldZ[1, Length @ in, 0], in},
-    True, {{}, {{1}}, {}} ]
- ]
-
-(**** </OldMatrix> ****)
 
 
 (**** <ZXTimes> ****)
@@ -875,14 +806,14 @@ ZXLayers[graph_Graph] := Module[
  ]
 
 ZXLayers[obj_ZXObject] := With[
-  { graph = Graph @ obj },
-  Map[ Graph[#, ImageSize -> 100] -> ZXLayers[#] &,
+  { graph = minimalGraph @ obj },
+  Map[ Graph[#, ImageSize -> 75] -> ZXLayers[#] &,
     Map[Subgraph[graph, #]&, WeaklyConnectedComponents @ graph] ]
  ]
 
 incomingEdges::usage = "incomingEdges[g][v] returns the list of edges incoming to vertex v in graph g."
 
-incomingEdges[obj_ZXObject][v_] := incomingEdges[theGraph @ obj][v]
+incomingEdges[obj_ZXObject][v_] := incomingEdges[minimalGraph @ obj][v]
 
 incomingEdges[g_Graph][v_] := incomingEdges[g][{v}]
 
@@ -892,7 +823,7 @@ incomingEdges[g_Graph][vv_List] := Sort @ Map[EdgeIndex[g, #]&] @
 
 outgoingEdges::usage = "outgoingEdges[g][v] returns the list of edges outgoing from vertex v in graph g."
 
-outgoingEdges[obj_ZXObject][v_] := outgoingEdges[theGraph @ obj][v]
+outgoingEdges[obj_ZXObject][v_] := outgoingEdges[minimalGraph @ obj][v]
 
 outgoingEdges[g_Graph][v_] := outgoingEdges[g][{v}]
 
@@ -927,8 +858,8 @@ ZXForm[QuantumCircuit[spec___, opts___?OptionQ], more___?OptionQ] := Module[
   vv = MapIndexed[zxcGate[aa], Flatten @ {spec}];
   ee = Flatten @ ReplaceAll[ vv,
     { Rule -> List,
-      _?DiamondQ -> Nothing,
-      sp_?ZXSpiderQ :> Base[sp] } ];
+      _?ZXDiamondQ -> Nothing,
+      v_?ZXSpiderQ :> Base[v] } ];
   ee = KeyValueMap[
     Chain[$i @ #1, Sequence @@ #2, $o @ #1]&,
     KeyTake[GroupBy[ee, First @* Base], Values @ aa]
