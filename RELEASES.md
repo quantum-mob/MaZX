@@ -1,5 +1,9 @@
 # Select Release Notes
 
+## v0.3.6
+
+- Shortcuts in the input arguments specifications of ZXDiagram, such as Z[{1,2,...}][phi] and Z[{1,2,...,n}][{a1,a2,...an}].
+
 ## v0.3.5
 
 - ZXDiagram now handles ZX diamonds separately for more consistent graph layouts regardless of the number of diamonds.

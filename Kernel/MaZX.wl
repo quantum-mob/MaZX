@@ -9,8 +9,8 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 4.37 $"][[2]], " (",
-  StringSplit["$Date: 2023-01-31 19:11:06+09 $"][[2]], ") ",
+  StringSplit["$Revision: 4.40 $"][[2]], " (",
+  StringSplit["$Date: 2023-02-01 00:52:02+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
@@ -23,11 +23,12 @@ ClearAll["`*"];
 { ZXDiagram, ZXObject,
   ZXMultiply, ZXBraKet };
 
-{ ZXSpeciesQ, ZXSpiderQ,
-  ZSpider, ZSpiders, ZSpiderQ,
+{ ZXSpeciesQ };
+{ ZSpider, ZSpiders, ZSpiderQ,
   XSpider, XSpiders, XSpiderQ,
-  Hadamard, ZXHadamards, ZXHadamardQ,
-  Diamond, ZXDiamonds, ZXDiamondQ };
+  ZXSpiderQ };
+{ ZXHadamard, ZXHadamards, ZXHadamardQ,
+  ZXDiamond, ZXDiamonds, ZXDiamondQ };
 
 { ZXSpiders, ZXLinks };
 
@@ -112,6 +113,8 @@ MaZXCheckUpdate[] := Module[
 (**** </MaZXInfo> ****)
 
 
+(**** <ZXSpecies> ****)
+
 ZSpider::usage = "ZSpider ..."
 
 XSpider::usage = "XSpider ..."
@@ -119,55 +122,36 @@ XSpider::usage = "XSpider ..."
 ZSpider /:
 Let[ZSpider, {ls__}] := (
   Clear[ls];
-  Scan[setSpecies, {ls}];
+  Scan[setSpider, {ls}];
   Scan[setZSpider, {ls}];
  )
 
 XSpider /:
 Let[XSpider, {ls__}] := (
   Clear[ls];
-  Scan[setSpecies, {ls}];
+  Scan[setSpider, {ls}];
   Scan[setXSpider, {ls}];
  )
 
-Unprotect[Let];
+setSpider[S_Symbol] := Module[
+  { },
+  ClearAttributes[S, Attributes @ S];
+  SetAttributes[S, {NHoldAll, ReadProtected}];
 
-Let[Hadamard, {ls__}] := (
-  Clear[ls];
-  Scan[setSpecies, {ls}];
-  Scan[setHadamard, {ls}];
- )
-
-Let[Diamond, {ls__}] := (
-  Clear[ls];
-  Scan[setSpecies, {ls}];
-  Scan[setDiamond, {ls}];
- )
-
-Protect[Let];
-
-setSpecies[Z_Symbol] := (
-  ClearAttributes[Z, Attributes @ Z];
-  SetAttributes[Z, {NHoldAll, ReadProtected}];
-
-  ZXSpeciesQ[Z] ^= True;
-  ZXSpeciesQ[Z[___]] ^= True;
-  ZXSpeciesQ[Z[___][___]] ^= True;
-
-  Z /: Base @ Z[k___] = Z[k];
-  Z /: Base @ Z := (Message[MaZXGeneral::base, Z]; Z[0]);
-
-  Z[k___] := ReleaseHold @ Thread[Hold[Z][k]] /; AnyTrue[{k}, MatchQ[_List]];
-  Format[Z[k___]] := Interpretation[Subscript[Z, k], Z[k]];
- )
-
-setSpider[S_Symbol] := (
   S /: Base @ S[k___][___] = S[k];
   S[___][Nothing] = Nothing;
   
+  ZXSpeciesQ[S] ^= True;
+  ZXSpeciesQ[S[___]] ^= True;
+  ZXSpeciesQ[S[___][___]] ^= True;
+
+  S /: Base @ S[k___] = S[k];
+  S /: Base @ S := (Message[MaZXGeneral::base, S]; S[0]);
+
+  Format[S[k___]] := Interpretation[Subscript[S, k], S[k]];
   Format[S[k___][phi_]] :=
     Interpretation[TraditionalForm @ Subscript[S, k][phi], S[k][phi]];
- )
+ ]
 
 setZSpider[Z_Symbol] := (
   setSpider[Z];
@@ -185,6 +169,36 @@ setXSpider[X_Symbol] := (
   XSpiderQ[X[___][___]] ^= True;
  )
 
+
+ZXHadamard /:
+Let[ZXHadamard, {ls__}] := (
+  Clear[ls];
+  Scan[setSpecies, {ls}];
+  Scan[setHadamard, {ls}];
+ )
+
+ZXDiamond /:
+Let[ZXDiamond, {ls__}] := (
+  Clear[ls];
+  Scan[setSpecies, {ls}];
+  Scan[setDiamond, {ls}];
+ )
+
+
+setSpecies[Z_Symbol] := (
+  ClearAttributes[Z, Attributes @ Z];
+  SetAttributes[Z, {NHoldAll, Listable, ReadProtected}];
+
+  ZXSpeciesQ[Z] ^= True;
+  ZXSpeciesQ[Z[___]] ^= True;
+  ZXSpeciesQ[Z[___][___]] ^= True;
+
+  Z /: Base @ Z[k___] = Z[k];
+  Z /: Base @ Z := (Message[MaZXGeneral::base, Z]; Z[0]);
+
+  Format[Z[k___]] := Interpretation[Subscript[Z, k], Z[k]];
+ )
+
 setDiamond[B_Symbol] := (
   ZXDiamondQ[B] ^= True;
   ZXDiamondQ[B[___]] ^= True;
@@ -199,6 +213,8 @@ setHadamard[H_Symbol] := (
 ZXSpeciesQ[_] = False;
 ZSpiderQ[_] = XSpiderQ[_] = ZXHadamardQ[_] = ZXDiamondQ[_] = False;
 ZXSpiderQ[S_] := Or[ZSpiderQ @ S, XSpiderQ @ S]
+
+(**** </ZXSpecies> ****)
 
 
 PhaseValue::usage = "PhaseValue[spider] returns the phase value of spider."
@@ -315,7 +331,7 @@ ZXDiagram[spec_List, opts___?OptionQ] := Module[
   { args, past, rules, vtxes, edges },
   past = Cases[spec, _ZXObject, Infinity, Heads -> False];
   args = DeleteCases[spec, _ZXObject, Infinity, Heads -> False];
-  args = Flatten[args /. Rule -> flatChain /. flatChain -> Chain];
+  args = Flatten[zxcThread[args] /. Rule -> flatChain /. flatChain -> Chain];
   rules= ruleSpiders[{past, args}];
   edges = Cases[args, _Rule] /. rules;
   vtxes = Union @ Flatten[
@@ -323,6 +339,13 @@ ZXDiagram[spec_List, opts___?OptionQ] := Module[
    ];
   Join[ZXObject[vtxes, edges, opts], Sequence @@ past]
  ]
+
+zxcThread[expr_] := expr /. {
+  Z_?ZXSpiderQ[k___][phi_] /; MatchQ[{k, phi}, _List] :> 
+    Thread[Hold[Z[#1][#2] &][k, phi]],
+  Z_?ZXSpiderQ[k___] /; MatchQ[{k}, _List] :>
+    Thread[Z[k]]
+ } // ReleaseHold
 
 ruleSpiders[expr_] := Module[
   { spiders },
@@ -968,8 +991,8 @@ $o::usage = "$o is a symbol reserved for outputs in a ZX diagram."
 
 Let[ZSpider, $Z, Global`Z];
 Let[XSpider, $X, Global`X];
-Let[Diamond, $B, Global`B];
-Let[Hadamard, $H, Global`H];
+Let[ZXDiamond, $B, Global`B];
+Let[ZXHadamard, $H, Global`H];
 Let[Species, $i, $o];
 
 SetAttributes[Evaluate @ Names["`*"], ReadProtected];
