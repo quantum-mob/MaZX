@@ -1,6 +1,6 @@
 (* -*- mode:math -*- *)
 Get["Q3`"];
-Q3Assert["2.9.6"];
+Q3Assert["2.9.7"];
 
 BeginPackage["MaZX`", {"Q3`"}]
 
@@ -9,8 +9,8 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 4.32 $"][[2]], " (",
-  StringSplit["$Date: 2023-01-30 23:08:01+09 $"][[2]], ") ",
+  StringSplit["$Revision: 4.37 $"][[2]], " (",
+  StringSplit["$Date: 2023-01-31 19:11:06+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
@@ -369,7 +369,7 @@ ZXObject /:
 Graph[obj:ZXObject[vv_List, ee_List, opts___?OptionQ], more___?OptionQ] :=
   Module[
     { rules = ruleSpiders[vv],
-      zz, xx, hh, bb, rr },
+      scale, zz, xx, hh, rr, nd },
 
     zz = Select[vv, ZSpiderQ];
     xx = Select[vv, XSpiderQ];
@@ -377,33 +377,35 @@ Graph[obj:ZXObject[vv_List, ee_List, opts___?OptionQ], more___?OptionQ] :=
     hh = Select[vv, ZXHadamardQ];
     checkHadamards[minimalGraph @ obj][hh];
 
-    bb = Select[vv, ZXDiamondQ];
-
     rr = DeleteCases[vv, _?ZXSpeciesQ];
     
-    Graph[ vv, ee,
+    main = Graph[ DeleteCases[vv, _?ZXDiamondQ], ee,
       Sequence @@ FilterRules[{more} /. rules, Options @ Graph],
       Sequence @@ FilterRules[{opts} /. rules, Options @ Graph],
-      VertexShapeFunction -> Join[
-        Thread[bb -> "Diamond"],
-        Thread[hh -> "Square"] ], 
+      VertexShapeFunction ->
+        Thread[hh -> "Square"], 
       VertexStyle -> Join[
         Thread[zz -> Green],
         Thread[xx -> Red], 
         Thread[hh -> Yellow],
-        Thread[bb -> Black],
         Thread[rr -> Directive[EdgeForm[], Transparent]] ],
       VertexSize -> Join[
-       Thread[zz -> 0.4],
-       Thread[xx -> 0.4],
-       Thread[hh -> 0.4],
-       Thread[bb -> 0.1],
+       Thread[zz -> 0.45],
+       Thread[xx -> 0.45],
+       Thread[hh -> 0.3],
        Thread[rr -> 0.01] ], 
-      VertexLabels -> Join[
-        (# -> Placed[PhaseValue @ #, Center])& /@ Join[zz, xx],
-        (# -> Placed["H", Center])& /@ hh ],
+      VertexLabels -> Normal @
+        AssociationMap[Placed[PhaseValue @ #, Center]&, Join[zz, xx]],
       EdgeStyle -> Arrowheads[{{Medium, 0.6}}],
       ImageSize -> Medium
+     ];
+
+    nd = Length @ Select[vv, ZXDiamondQ];
+    Which[
+      nd == 0, main,
+      nd == Length[vv], theDiamondGrid[nd],
+      True,
+      Grid @ {{main, theDiamondGrid @ nd}}
      ]
    ]
 
@@ -411,6 +413,23 @@ Graph[obj:ZXObject[vv_List, ee_List, opts___?OptionQ], more___?OptionQ] :=
 minimalGraph[ZXObject[vv_List, ee_List, ___?OptionQ], more___?OptionQ] :=
   Graph[DeleteCases[vv, _?ZXDiamondQ], ee, more];
 
+
+$DiamondMark = Style["\[FilledDiamond]", 45]
+
+theDiamondGrid[0] = ""
+
+theDiamondGrid[1] = Grid @ {{$DiamondMark}}
+
+theDiamondGrid[n_Integer] := Grid @ Map[
+  Table[Item[$DiamondMark], #]&,
+  Flatten @ MinimalBy[ Reverse @ IntegerPartitions @ n,
+    Abs[Length[#]-Max[#]]&, 1 ]
+ ]
+
+(**** </ZXObject> ****)
+
+
+(**** <Join> ****)
 
 ZXObject /:
 Join[obj:ZXObject[_List, _List, ___?OptionQ]..] := Module[
@@ -424,7 +443,7 @@ Join[obj:ZXObject[_List, _List, ___?OptionQ]..] := Module[
   ZXObject[Union @ First @ data, Last @ data, Sequence @@ opts]
  ]
 
-(**** </ZXObject> ****)
+(**** </Join> ****)
 
 
 (**** <Basis> ****)

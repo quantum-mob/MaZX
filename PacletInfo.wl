@@ -1,10 +1,10 @@
 (* Paclet Info File *)
-(* $Date: 2023-01-30 23:09:15+09 $ *)
-(* $Revision: 1.8 $ *)
+(* $Date: 2023-01-31 19:12:25+09 $ *)
+(* $Revision: 1.9 $ *)
 
 Paclet[
   "Name" -> "MaZX",
-  "Version" -> "0.3.3",
+  "Version" -> "0.3.5",
   "WolframVersion" -> "12.1+",
   "Updating" -> Automatic,
   "Extensions" -> {

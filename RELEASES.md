@@ -1,5 +1,9 @@
 # Select Release Notes
 
+## v0.3.5
+
+- ZXDiagram now handles ZX diamonds separately for more consistent graph layouts regardless of the number of diamonds.
+
 ## v0.3.3
 
 - Bug fixesin ZXDiagram, ZXMultiply, ZXLayers, Matrix[_ZXObject].
