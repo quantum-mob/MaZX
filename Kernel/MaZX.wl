@@ -9,8 +9,8 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 4.40 $"][[2]], " (",
-  StringSplit["$Date: 2023-02-01 00:52:02+09 $"][[2]], ") ",
+  StringSplit["$Revision: 5.7 $"][[2]], " (",
+  StringSplit["$Date: 2023-02-02 23:45:35+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
@@ -34,7 +34,7 @@ ClearAll["`*"];
 
 { ToZBasis, ToXBasis };
 
-{ ZXForm };
+{ ZXForm, ZXStandardForm };
 
 { ZXLayers };
 
@@ -341,9 +341,9 @@ ZXDiagram[spec_List, opts___?OptionQ] := Module[
  ]
 
 zxcThread[expr_] := expr /. {
-  Z_?ZXSpiderQ[k___][phi_] /; MatchQ[{k, phi}, _List] :> 
-    Thread[Hold[Z[#1][#2] &][k, phi]],
-  Z_?ZXSpiderQ[k___] /; MatchQ[{k}, _List] :>
+  Z_?ZXSpiderQ[k___][phi_] /; AnyTrue[{k, phi}, MatchQ[_List]] :> 
+    Thread[Hold[Z[##2][#1]&][phi, k]],
+  Z_?ZXSpiderQ[k___] /; AnyTrue[{k}, MatchQ[_List]] :>
     Thread[Z[k]]
  } // ReleaseHold
 
@@ -402,7 +402,9 @@ Graph[obj:ZXObject[vv_List, ee_List, opts___?OptionQ], more___?OptionQ] :=
 
     rr = DeleteCases[vv, _?ZXSpeciesQ];
     
-    main = Graph[ DeleteCases[vv, _?ZXDiamondQ], ee,
+    main = Graph[
+      DeleteCases[vv, _?ZXDiamondQ],
+      convertToEdges[ee],
       Sequence @@ FilterRules[{more} /. rules, Options @ Graph],
       Sequence @@ FilterRules[{opts} /. rules, Options @ Graph],
       VertexShapeFunction ->
@@ -420,6 +422,7 @@ Graph[obj:ZXObject[vv_List, ee_List, opts___?OptionQ], more___?OptionQ] :=
       VertexLabels -> Normal @
         AssociationMap[Placed[PhaseValue @ #, Center]&, Join[zz, xx]],
       EdgeStyle -> Arrowheads[{{Medium, 0.6}}],
+      GraphLayout -> {"LayeredDigraphEmbedding", "Orientation" -> Left},
       ImageSize -> Medium
      ];
 
@@ -432,9 +435,17 @@ Graph[obj:ZXObject[vv_List, ee_List, opts___?OptionQ], more___?OptionQ] :=
      ]
    ]
 
-(* Minimal graph with only skeleton. *)
+minimalGraph::usage = "minimalGraph[obj] generates the minimal graph with only skeleton."
+
 minimalGraph[ZXObject[vv_List, ee_List, ___?OptionQ], more___?OptionQ] :=
-  Graph[DeleteCases[vv, _?ZXDiamondQ], ee, more];
+  Graph[DeleteCases[vv, _?ZXDiamondQ], convertToEdges[ee], more]
+
+convertToEdges::usage = "convertToEdges[{v1 -> v2, v2 -> v3, \[Ellipsis]}] returns a list of DirectedEdge[vi -> vj, n]. It takes care of duplicate edges."
+
+convertToEdges[ee:{___Rule}] := Flatten @ KeyValueMap[
+  Function[{rr, n}, Array[DirectedEdge[Sequence @@ rr, #]&, n]],
+  Counts[ee]
+ ]
 
 
 $DiamondMark = Style["\[FilledDiamond]", 45]
@@ -450,6 +461,45 @@ theDiamondGrid[n_Integer] := Grid @ Map[
  ]
 
 (**** </ZXObject> ****)
+
+
+(**** <ZXStandardForm> ****)
+
+ZXStandardForm::usage = "ZXStandardForm[obj] convert ZX diagram obj into the standard form."
+
+ZXStandardForm[ZXObject[vv_List, ee_List, opts___?OptionQ]] := Module[
+  { zx, ff, bb, gg },
+  zx = Cases[ ee,
+    HoldPattern[_?ZSpiderQ -> _?ZSpiderQ] |
+    HoldPattern[_?XSpiderQ -> _?XSpiderQ]
+   ];
+  gg = WeaklyConnectedGraphComponents @ Graph[zx];
+  rr = Flatten[zxsfMergeRules /@ VertexList /@ gg];
+  {ff, bb} = Transpose @ zxsfTrimEdges[Complement[ee, zx] /. rr];
+
+  bb = Total[bb];
+  If[ bb > 1,
+    Print["The result needs to be divied by ", Power[Sqrt[2], bb], "."]
+   ];
+  
+  ZXObject[vv /. rr, Flatten @ ff, opts] 
+ ]
+
+zxsfMergeRules[ss:{__?ZXSpiderQ}] := With[
+  { phi = Total[PhaseValue /@ ss] },
+  Thread[ ss -> Base[First @ ss][Total[PhaseValue /@ ss]] ]
+ ]
+
+zxsfTrimEdges[ee:{___Rule}] := KeyValueMap[
+  Which[
+    #2 == 1, {#1, 0},
+    OddQ[#2], {#1, #2-1},
+    True, {{}, #2}
+   ]&,
+  Counts[ee]
+ ]
+
+(**** </ZXStandardForm> ****)
 
 
 (**** <Join> ****)
@@ -489,8 +539,12 @@ ZXObject /:
 VertexList[ZXObject[vv_List, ee_List, ___?OptionQ]] :=
   VertexList[Graph[vv, ee]]
 
+ZXObject /: VertexList[obj_ZXObject] = obj (* fallback *)
+
 ZXObject /:
-VertexList[obj_ZXObject] = obj (* fallback *)
+EdgeList[ZXObject[vv_List, ee_List, ___?OptionQ]] := ee
+
+ZXObject /: EdgeList[obj_ZXObject] = obj (* fallback *)
 
 (**** </Basis> ****)
 
@@ -846,12 +900,12 @@ ToXBasis[Ket[a_Association], kk_List] := Module[
  ]
 
 
-ToZBasis[expr_, kk_] := expr /. {
+ToZBasis[expr_, kk:(_List|All)] := expr /. {
   v:Ket[_Association] :> ToZBasis[v, kk],
   v:Bra[_Association] :> ToZBasis[v, kk]
  } // Garner
 
-ToXBasis[expr_, kk_] := expr /. {
+ToXBasis[expr_, kk:(_List|All)] := expr /. {
   v:Ket[_Association] :> ToXBasis[v, kk],
   v:Bra[_Association] :> ToXBasis[v, kk]
  } // Garner
@@ -898,7 +952,7 @@ incomingEdges[obj_ZXObject][v_] := incomingEdges[minimalGraph @ obj][v]
 incomingEdges[g_Graph][v_] := incomingEdges[g][{v}]
 
 incomingEdges[g_Graph][vv_List] := Sort @ Map[EdgeIndex[g, #]&] @
-  EdgeList[g, DirectedEdge[_, Alternatives @@ vv]]
+  EdgeList[g, DirectedEdge[_, Alternatives @@ vv, ___]]
 
 
 outgoingEdges::usage = "outgoingEdges[g][v] returns the list of edges outgoing from vertex v in graph g."
@@ -908,7 +962,7 @@ outgoingEdges[obj_ZXObject][v_] := outgoingEdges[minimalGraph @ obj][v]
 outgoingEdges[g_Graph][v_] := outgoingEdges[g][{v}]
 
 outgoingEdges[g_Graph][vv_List] := Sort @ Map[EdgeIndex[g, #]&] @
-  EdgeList[g, DirectedEdge[Alternatives @@ vv, _]]
+  EdgeList[g, DirectedEdge[Alternatives @@ vv, _, ___]]
 
 
 theInOutEdges::usage = "theInOutEdges[...] ..."
@@ -938,8 +992,7 @@ ZXForm[QuantumCircuit[spec___, opts___?OptionQ], more___?OptionQ] := Module[
   vv = MapIndexed[zxcGate[aa], Flatten @ {spec}];
   ee = Flatten @ ReplaceAll[ vv,
     { Rule -> List,
-      _?ZXDiamondQ -> Nothing,
-      v_?ZXSpiderQ :> Base[v] } ];
+      _?ZXDiamondQ -> Nothing } ];
   ee = KeyValueMap[
     Chain[$i @ #1, Sequence @@ #2, $o @ #1]&,
     KeyTake[GroupBy[ee, First @* Base], Values @ aa]
