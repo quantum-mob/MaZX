@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     13552,        363]
-NotebookOptionsPosition[      9685,        278]
-NotebookOutlinePosition[     10196,        296]
-CellTagsIndexPosition[     10153,        293]
+NotebookDataLength[     15174,        398]
+NotebookOptionsPosition[     10927,        307]
+NotebookOutlinePosition[     11438,        325]
+CellTagsIndexPosition[     11395,        322]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -30,7 +30,20 @@ beyond quantum circuit model.\
 \>", "GuideAbstract",
  CellChangeTimes->{{3.883370115366555*^9, 3.883370129545692*^9}, {
   3.8835512381232567`*^9, 3.88355125159846*^9}},
- CellID->156298994,ExpressionUUID->"14a12607-84b7-4277-a6f3-6dc9c1d5c09e"]
+ CellID->156298994,ExpressionUUID->"14a12607-84b7-4277-a6f3-6dc9c1d5c09e"],
+
+Cell[TextData[{
+ "This package was inspired by the ",
+ ButtonBox["MakeZXDiagram",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://resources.wolframcloud.com/FunctionRepository/resources/\
+MakeZXDiagram"], None}],
+ " function by Janathan Gorard and Manojna Namuduri."
+}], "GuideAbstract",
+ CellChangeTimes->{{3.884378710906814*^9, 3.884378729803522*^9}, {
+  3.88437881462645*^9, 3.8843788716846237`*^9}},
+ CellID->159849571,ExpressionUUID->"64201f7d-e55b-41c0-a31c-7c4ada118f7e"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -72,23 +85,15 @@ Cell[TextData[{
 
 Cell[TextData[{
  Cell[BoxData[
-  TagBox[
-   FrameBox["\<\"XXXX\"\>"],
-   "FunctionPlaceholder"]], "InlineGuideFunction",
+  ButtonBox["ZXForm",
+   BaseStyle->"Link",
+   ButtonData->"paclet:MaZX/ref/ZXForm"]], "InlineGuideFunction",
   TaggingRules->{"PageType" -> "Function"},
   CellTags->"c5c6736a-1ff4-4e4e-8fcf-2d9846cbae62",ExpressionUUID->
   "91e5dbb1-3596-4195-a4f4-f5c14e15af59"],
- " \[LongDash] ",
- Cell[BoxData[
-  TagBox[
-   TagBox[
-    FrameBox["description"],
-    "GuideTextPlaceholder"],
-   EventHandlerTag[{"MouseClicked" :> SelectionMove[
-       EvaluationCell[], All, Cell], Method -> "Preemptive", PassEventsDown -> 
-     Automatic, PassEventsUp -> True}]]],ExpressionUUID->
-  "49231427-18f0-427c-8237-8da966220bd7"]
+ " \[LongDash] Converts a quantum circuit into a ZX diagram"
 }], "GuideText",
+ CellChangeTimes->{{3.884378524810807*^9, 3.88437855075214*^9}},
  CellID->901989124,ExpressionUUID->"1e2b2b7f-b909-496f-95c2-3958e788de82"],
 
 Cell[TextData[{
@@ -145,10 +150,10 @@ Cell[TextData[{
     "f5247e38-ea3e-4af5-9468-3487d0147474"], 
    DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
     "0e281cc6-7931-4073-80f8-0999ab7a7f3a", 
-     "b4097069-ee22-4628-8f54-69fcd7dc05c0"], $CellContext`cellobj$$ = 
+     "a0c8e5f9-6924-4573-87c6-23c468b06e41"], $CellContext`cellobj$$ = 
     CellObject[
     "ce3396c5-bbb5-441c-a3e8-15109e1389ec", 
-     "9d749a3c-bfa4-4d82-b93f-86a33b19df4a"]}, 
+     "30ee60fc-9ee2-48ca-8a33-4e7b7aba4cae"]}, 
     TemplateBox[{
       GraphicsBox[{{
          Thickness[0.06], 
@@ -220,7 +225,31 @@ ZX-calculus.\""
 }], "GuideRelatedLinks",
  CellChangeTimes->{{3.883556481957612*^9, 3.883556548833723*^9}, 
    3.883556586102145*^9},
- CellID->1779031939,ExpressionUUID->"eea84f40-d027-488d-a57e-5506036ed997"]
+ CellID->1779031939,ExpressionUUID->"eea84f40-d027-488d-a57e-5506036ed997"],
+
+Cell[TextData[{
+ ButtonBox["B. Coecke and R. Duncan, New Journal of Physics 13, 043016 (2011)",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://doi.org/10.1088/1367-2630/13/4/043016"], None}],
+ ", \"Interacting quantum observables: categorical algebra and diagrammatics.\
+\""
+}], "GuideRelatedLinks",
+ CellChangeTimes->{{3.884378403682712*^9, 3.8843784618396597`*^9}, 
+   3.8843785036850023`*^9},
+ CellID->1206166403,ExpressionUUID->"71c2cc71-3629-4178-a5c5-97ea3c2815d5"],
+
+Cell[TextData[{
+ ButtonBox["Janathan Gorard and Manojna Namuduri, MakeZXDiagram (2020)",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://resources.wolframcloud.com/FunctionRepository/resources/\
+MakeZXDiagram"], None}],
+ ", in Wolfram Function Repository."
+}], "GuideRelatedLinks",
+ CellChangeTimes->{{3.88437862039287*^9, 3.8843786670954037`*^9}, 
+   3.884378699973114*^9},
+ CellID->378064832,ExpressionUUID->"456b4d5c-b204-4361-a59f-d6dea732e9a3"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -299,69 +328,75 @@ Cell[CellGroupData[{
 Cell[580, 22, 102, 1, 88, "GuideTitle",ExpressionUUID->"4cd1b976-e250-4749-ac77-22164bf2d4d3",
  CellID->1101286241],
 Cell[685, 25, 404, 7, 47, "GuideAbstract",ExpressionUUID->"14a12607-84b7-4277-a6f3-6dc9c1d5c09e",
- CellID->156298994]
+ CellID->156298994],
+Cell[1092, 34, 489, 11, 47, "GuideAbstract",ExpressionUUID->"64201f7d-e55b-41c0-a31c-7c4ada118f7e",
+ CellID->159849571]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[1126, 37, 108, 1, 72, "GuideFunctionsSection",ExpressionUUID->"bdc7610e-d4e0-4df8-838d-887d893c674d",
+Cell[1618, 50, 108, 1, 72, "GuideFunctionsSection",ExpressionUUID->"bdc7610e-d4e0-4df8-838d-887d893c674d",
  CellID->544691877],
-Cell[1237, 40, 655, 15, 27, "GuideText",ExpressionUUID->"ae4821d0-d7d9-4ac4-8b9b-5269bffdfc48",
+Cell[1729, 53, 655, 15, 27, "GuideText",ExpressionUUID->"ae4821d0-d7d9-4ac4-8b9b-5269bffdfc48",
  CellID->408357668],
-Cell[1895, 57, 608, 13, 27, "GuideText",ExpressionUUID->"e654e7c8-b412-4c6d-90ba-ddb283001afc",
+Cell[2387, 70, 608, 13, 27, "GuideText",ExpressionUUID->"e654e7c8-b412-4c6d-90ba-ddb283001afc",
  CellID->2057073911],
-Cell[2506, 72, 712, 19, 30, "GuideText",ExpressionUUID->"1e2b2b7f-b909-496f-95c2-3958e788de82",
+Cell[2998, 85, 513, 11, 27, "GuideText",ExpressionUUID->"1e2b2b7f-b909-496f-95c2-3958e788de82",
  CellID->901989124],
-Cell[3221, 93, 713, 19, 30, "GuideText",ExpressionUUID->"1fb0d5e8-ea59-4842-a5e4-cfda51ff45ac",
+Cell[3514, 98, 713, 19, 30, "GuideText",ExpressionUUID->"1fb0d5e8-ea59-4842-a5e4-cfda51ff45ac",
  CellID->1546466465],
 Cell[CellGroupData[{
-Cell[3959, 116, 103, 1, 27, "GuideDelimiter",ExpressionUUID->"ce9b2071-63af-4761-8423-9cf20da1110a",
+Cell[4252, 121, 103, 1, 27, "GuideDelimiter",ExpressionUUID->"ce9b2071-63af-4761-8423-9cf20da1110a",
  CellID->467297614],
-Cell[4065, 119, 2395, 58, 27, "InlineGuideFunctionListing",ExpressionUUID->"31e8126a-85af-474a-9c48-03d4f7a5cb9e",
+Cell[4358, 124, 2395, 58, 27, "InlineGuideFunctionListing",ExpressionUUID->"31e8126a-85af-474a-9c48-03d4f7a5cb9e",
  CellID->523301419]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[6509, 183, 119, 1, 74, "GuideTutorialsSection",ExpressionUUID->"d53f20cf-e885-4ec9-811f-7b1c323d7c74",
+Cell[6802, 188, 119, 1, 74, "GuideTutorialsSection",ExpressionUUID->"d53f20cf-e885-4ec9-811f-7b1c323d7c74",
  CellID->1181414668],
-Cell[6631, 186, 104, 1, 24, "GuideTutorial",ExpressionUUID->"a5f437f4-1dc7-4b0b-8da5-6ed1cdbe4283",
+Cell[6924, 191, 104, 1, 24, "GuideTutorial",ExpressionUUID->"a5f437f4-1dc7-4b0b-8da5-6ed1cdbe4283",
  CellID->402524914],
-Cell[6738, 189, 104, 1, 24, "GuideTutorial",ExpressionUUID->"92e7b159-da53-430c-ad1c-4b147d2c678f",
+Cell[7031, 194, 104, 1, 24, "GuideTutorial",ExpressionUUID->"92e7b159-da53-430c-ad1c-4b147d2c678f",
  CellID->662741548]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[6879, 195, 191, 2, 74, "GuideMoreAboutSection",ExpressionUUID->"ba8eea8d-8888-4e96-987c-4242484db8f1",
+Cell[7172, 200, 191, 2, 74, "GuideMoreAboutSection",ExpressionUUID->"ba8eea8d-8888-4e96-987c-4242484db8f1",
  CellID->1847003894],
-Cell[7073, 199, 105, 1, 24, "GuideMoreAbout",ExpressionUUID->"4670d350-0d86-405b-bf49-e1aab10fbe22",
+Cell[7366, 204, 105, 1, 24, "GuideMoreAbout",ExpressionUUID->"4670d350-0d86-405b-bf49-e1aab10fbe22",
  CellID->718329073],
-Cell[7181, 202, 106, 1, 24, "GuideMoreAbout",ExpressionUUID->"ee0ea505-3e9e-4a46-819f-9020979c87f8",
+Cell[7474, 207, 106, 1, 24, "GuideMoreAbout",ExpressionUUID->"ee0ea505-3e9e-4a46-819f-9020979c87f8",
  CellID->1951150124]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[7324, 208, 124, 1, 74, "GuideRelatedLinksSection",ExpressionUUID->"48c69d5d-17d2-40bd-a8ae-3c8291c46b9d",
+Cell[7617, 213, 124, 1, 74, "GuideRelatedLinksSection",ExpressionUUID->"48c69d5d-17d2-40bd-a8ae-3c8291c46b9d",
  CellID->904844378],
-Cell[7451, 211, 495, 11, 42, "GuideRelatedLinks",ExpressionUUID->"eea84f40-d027-488d-a57e-5506036ed997",
- CellID->1779031939]
+Cell[7744, 216, 495, 11, 42, "GuideRelatedLinks",ExpressionUUID->"eea84f40-d027-488d-a57e-5506036ed997",
+ CellID->1779031939],
+Cell[8242, 229, 483, 10, 42, "GuideRelatedLinks",ExpressionUUID->"71c2cc71-3629-4178-a5c5-97ea3c2815d5",
+ CellID->1206166403],
+Cell[8728, 241, 460, 10, 42, "GuideRelatedLinks",ExpressionUUID->"456b4d5c-b204-4361-a59f-d6dea732e9a3",
+ CellID->378064832]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[7983, 227, 111, 1, 72, "MetadataSection",ExpressionUUID->"d053d5e6-14e1-4e3c-ba06-0fcd7d992f25",
+Cell[9225, 256, 111, 1, 72, "MetadataSection",ExpressionUUID->"d053d5e6-14e1-4e3c-ba06-0fcd7d992f25",
  CellID->1387756639],
-Cell[8097, 230, 544, 13, 26, "History",ExpressionUUID->"f163b3ac-1c35-4598-86f5-dc9c04199d84",
+Cell[9339, 259, 544, 13, 26, "History",ExpressionUUID->"f163b3ac-1c35-4598-86f5-dc9c04199d84",
  CellID->205941606],
 Cell[CellGroupData[{
-Cell[8666, 247, 123, 1, 21, "CategorizationSection",ExpressionUUID->"e0933749-89df-48f3-b3bd-acc692166ad2",
+Cell[9908, 276, 123, 1, 21, "CategorizationSection",ExpressionUUID->"e0933749-89df-48f3-b3bd-acc692166ad2",
  CellID->1664416725],
-Cell[8792, 250, 133, 2, 35, "Categorization",ExpressionUUID->"07b5ce8e-a507-4f3f-ba39-70f6fafd9ef7",
+Cell[10034, 279, 133, 2, 35, "Categorization",ExpressionUUID->"07b5ce8e-a507-4f3f-ba39-70f6fafd9ef7",
  CellID->729911253],
-Cell[8928, 254, 133, 2, 35, "Categorization",ExpressionUUID->"dee56363-8624-4704-ad2b-368f713a55bd",
+Cell[10170, 283, 133, 2, 35, "Categorization",ExpressionUUID->"dee56363-8624-4704-ad2b-368f713a55bd",
  CellID->1191837507],
-Cell[9064, 258, 130, 2, 70, "Categorization",ExpressionUUID->"1dcac9c6-fec6-47cf-aaf5-8f64e823a3f9",
+Cell[10306, 287, 130, 2, 35, "Categorization",ExpressionUUID->"1dcac9c6-fec6-47cf-aaf5-8f64e823a3f9",
  CellID->1633004580],
-Cell[9197, 262, 136, 2, 70, "Categorization",ExpressionUUID->"72ea4ed3-b49e-49f4-8248-2475fa405df5",
+Cell[10439, 291, 136, 2, 35, "Categorization",ExpressionUUID->"72ea4ed3-b49e-49f4-8248-2475fa405df5",
  CellID->1066967400]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[9370, 269, 111, 1, 70, "KeywordsSection",ExpressionUUID->"0a13aae6-0ce6-420c-9478-cf7c825db9b3",
+Cell[10612, 298, 111, 1, 31, "KeywordsSection",ExpressionUUID->"0a13aae6-0ce6-420c-9478-cf7c825db9b3",
  CellID->1032639350],
-Cell[9484, 272, 173, 2, 70, "Keywords",ExpressionUUID->"9399151e-92a8-415b-a8d4-1cdb2eefe82f",
+Cell[10726, 301, 173, 2, 21, "Keywords",ExpressionUUID->"9399151e-92a8-415b-a8d4-1cdb2eefe82f",
  CellID->1754204043]
 }, Open  ]]
 }, Open  ]]
