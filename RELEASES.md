@@ -1,5 +1,9 @@
 # Select Release Notes
 
+## v0.3.8
+
+- A bug fix in ZXDiagram concerning spiders with multiple indices.
+
 ## v0.3.6
 
 - Shortcuts in the input arguments specifications of ZXDiagram, such as Z[{1,2,...}][phi] and Z[{1,2,...,n}][{a1,a2,...an}].
