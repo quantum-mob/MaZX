@@ -9,8 +9,8 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 5.7 $"][[2]], " (",
-  StringSplit["$Date: 2023-02-02 23:45:35+09 $"][[2]], ") ",
+  StringSplit["$Revision: 5.8 $"][[2]], " (",
+  StringSplit["$Date: 2023-02-03 22:52:21+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
@@ -467,23 +467,24 @@ theDiamondGrid[n_Integer] := Grid @ Map[
 
 ZXStandardForm::usage = "ZXStandardForm[obj] convert ZX diagram obj into the standard form."
 
-ZXStandardForm[ZXObject[vv_List, ee_List, opts___?OptionQ]] := Module[
-  { zx, ff, bb, gg },
-  zx = Cases[ ee,
-    HoldPattern[_?ZSpiderQ -> _?ZSpiderQ] |
-    HoldPattern[_?XSpiderQ -> _?XSpiderQ]
-   ];
-  gg = WeaklyConnectedGraphComponents @ Graph[zx];
-  rr = Flatten[zxsfMergeRules /@ VertexList /@ gg];
-  {ff, bb} = Transpose @ zxsfTrimEdges[Complement[ee, zx] /. rr];
+ZXStandardForm[ZXObject[vv_List, ee_List, opts___?OptionQ],
+  more___?OptionQ] := Module[
+    { zx, ff, bb, gg },
+    zx = Cases[ ee,
+      HoldPattern[_?ZSpiderQ -> _?ZSpiderQ] |
+      HoldPattern[_?XSpiderQ -> _?XSpiderQ]
+     ];
+    gg = WeaklyConnectedGraphComponents @ Graph[zx];
+    rr = Flatten[zxsfMergeRules /@ VertexList /@ gg];
+    {ff, bb} = Transpose @ zxsfTrimEdges[Complement[ee, zx] /. rr];
 
-  bb = Total[bb];
-  If[ bb > 1,
-    Print["The result needs to be divied by ", Power[Sqrt[2], bb], "."]
-   ];
-  
-  ZXObject[vv /. rr, Flatten @ ff, opts] 
- ]
+    bb = Total[bb];
+    If[ bb > 1,
+      Print["The result needs to be divied by ", Power[Sqrt[2], bb], "."]
+     ];
+    
+    ZXObject[vv /. rr, Flatten @ ff, more, opts] 
+   ]
 
 zxsfMergeRules[ss:{__?ZXSpiderQ}] := With[
   { phi = Total[PhaseValue /@ ss] },
@@ -1007,6 +1008,16 @@ zxcGate[aa_Association][q_?QubitQ, {t_Integer}] := With[
     1, $X[k][Pi],
     2, {$Z[k][Pi], $Z[k][Pi]},
     6, $H[k],
+    _, 1
+   ]
+ ]
+
+zxcGate[ss_Association][Phase[phi_, q_?QubitQ], {t_Integer}] := With[
+  { k = theSpacetime[ss][q, t] },
+  Switch[ FlavorLast[q],
+    3, $Z[k][phi],
+    1, $X[k][phi],
+    2, 1, (* TDDO *)
     _, 1
    ]
  ]
