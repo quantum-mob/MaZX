@@ -1,6 +1,6 @@
 (* -*- mode:math -*- *)
 Get["Q3`"];
-Q3Assert["2.9.7"];
+Q3Assert["2.9.9"];
 
 BeginPackage["MaZX`", {"Q3`"}]
 
@@ -9,8 +9,8 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 5.8 $"][[2]], " (",
-  StringSplit["$Date: 2023-02-03 22:52:21+09 $"][[2]], ") ",
+  StringSplit["$Revision: 5.13 $"][[2]], " (",
+  StringSplit["$Date: 2023-02-05 19:11:53+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
@@ -33,8 +33,6 @@ ClearAll["`*"];
 { ZXSpiders, ZXLinks };
 
 { ToZBasis, ToXBasis };
-
-{ ZXForm, ZXStandardForm };
 
 { ZXLayers };
 
@@ -463,46 +461,6 @@ theDiamondGrid[n_Integer] := Grid @ Map[
 (**** </ZXObject> ****)
 
 
-(**** <ZXStandardForm> ****)
-
-ZXStandardForm::usage = "ZXStandardForm[obj] convert ZX diagram obj into the standard form."
-
-ZXStandardForm[ZXObject[vv_List, ee_List, opts___?OptionQ],
-  more___?OptionQ] := Module[
-    { zx, ff, bb, gg },
-    zx = Cases[ ee,
-      HoldPattern[_?ZSpiderQ -> _?ZSpiderQ] |
-      HoldPattern[_?XSpiderQ -> _?XSpiderQ]
-     ];
-    gg = WeaklyConnectedGraphComponents @ Graph[zx];
-    rr = Flatten[zxsfMergeRules /@ VertexList /@ gg];
-    {ff, bb} = Transpose @ zxsfTrimEdges[Complement[ee, zx] /. rr];
-
-    bb = Total[bb];
-    If[ bb > 1,
-      Print["The result needs to be divied by ", Power[Sqrt[2], bb], "."]
-     ];
-    
-    ZXObject[vv /. rr, Flatten @ ff, more, opts] 
-   ]
-
-zxsfMergeRules[ss:{__?ZXSpiderQ}] := With[
-  { phi = Total[PhaseValue /@ ss] },
-  Thread[ ss -> Base[First @ ss][Total[PhaseValue /@ ss]] ]
- ]
-
-zxsfTrimEdges[ee:{___Rule}] := KeyValueMap[
-  Which[
-    #2 == 1, {#1, 0},
-    OddQ[#2], {#1, #2-1},
-    True, {{}, #2}
-   ]&,
-  Counts[ee]
- ]
-
-(**** </ZXStandardForm> ****)
-
-
 (**** <Join> ****)
 
 ZXObject /:
@@ -832,10 +790,10 @@ ZXMultiply[pre___, z_?CommutativeQ op_, post___] :=
 ZXMultiply[pre___, expr_Plus, post___] := Total @ ZXMultiply[pre, List @@ expr, post]
 
 ZXMultiply[pre___, Ket[a_], Ket[b_], post___] :=
-  ZXMultiply[pre, Ket @ KeySort @ Join[a, b], post]
+  ZXMultiply[pre, Ket @ KeySort @ CheckJoin[a, b], post]
 
 ZXMultiply[pre___, Bra[a_], Bra[b_], post___] :=
-  ZXMultiply[pre, Bra @ KeySort @ Join[a, b], post]
+  ZXMultiply[pre, Bra @ KeySort @ CheckJoin[a, b], post]
 
 ZXMultiply[pre___, Bra[a_], Ket[b_], post___] := With[
   { kk = Intersection[Keys @ a, Keys @ b] },
@@ -981,83 +939,43 @@ theInOutEdges[g_Graph][v_] :=
 
 (**** </ZXLayers> ****)
 
+End[]
 
-(**** <ZXForm> ****)
-
-ZXForm::usage = "ZXForm[qc] converts quantum circuit qc to a ZXObject.\nNote that it only supports gates acting on up to two qubits."
-
-ZXForm[QuantumCircuit[spec___, opts___?OptionQ], more___?OptionQ] := Module[
-  { aa = Qubits @ {spec},
-    vv, ee },
-  aa = AssociationThread[aa -> Range[Length @ aa]];
-  vv = MapIndexed[zxcGate[aa], Flatten @ {spec}];
-  ee = Flatten @ ReplaceAll[ vv,
-    { Rule -> List,
-      _?ZXDiamondQ -> Nothing } ];
-  ee = KeyValueMap[
-    Chain[$i @ #1, Sequence @@ #2, $o @ #1]&,
-    KeyTake[GroupBy[ee, First @* Base], Values @ aa]
-   ];
-  ZXDiagram[Flatten @ {vv, ee}, more, opts]
- ]
-
-zxcGate[aa_Association][q_?QubitQ, {t_Integer}] := With[
-  { k = theSpacetime[aa][q, t] },
-  Switch[ FlavorLast[q],
-    3, $Z[k][Pi],
-    1, $X[k][Pi],
-    2, {$Z[k][Pi], $Z[k][Pi]},
-    6, $H[k],
-    _, 1
-   ]
- ]
-
-zxcGate[ss_Association][Phase[phi_, q_?QubitQ], {t_Integer}] := With[
-  { k = theSpacetime[ss][q, t] },
-  Switch[ FlavorLast[q],
-    3, $Z[k][phi],
-    1, $X[k][phi],
-    2, 1, (* TDDO *)
-    _, 1
-   ]
- ]
-
-zxcGate[ss_Association][CZ[{a_?QubitQ}, {b_?QubitQ}], {t_Integer}] := 
-  { Chain[
-      $Z[theSpacetime[ss][a, t]][0],
-      $H[Unique[], t],
-      $Z[theSpacetime[ss][b, t]][0] ],
-    $B[t] }
-
-zxcGate[ss_Association][CNOT[{a_?QubitQ} -> {1}, {b_?QubitQ}], {t_Integer}] :=
-  { $Z[theSpacetime[ss][a, t]][0] ->
-      $X[theSpacetime[ss][b, t]][0], $B[t] }
-
-theSpacetime[aa_Association][q_?QubitQ, t_Integer] :=
-  Sequence[aa @ FlavorMute @ q, t]
-
-(**** </ZXForm> ****)
+EndPackage[]
 
 
-(**** Epilog ****)
+(**** <Packages Loading> ****)
 
-$Z::usage = "$Z is a symbol reserved for the Z spider in the ZX-calculus. See also \[FormalCapitalZ]."
+Get["MaZX`ZXVille`"]
+Get["MaZX`ZXCafe`"]
 
-$X::usage = "$X is a symbol reserved for the X spider in the ZX-calculus. See also \[FormalCapitalX]."
+(**** </Packages Loading> ****)
 
-$H::usage = "$H is a symbol reserved for the Hadamard gate in the ZX-calculus. See also \[FormalCapitalH]."
 
-$B::usage = "$B is a symbol reserved for the ZX diamond in the ZX-calculus. See also \[FormalCapitalB]."
+BeginPackage["MaZX`", {"Q3`"}]
+
+Begin["`Private`"]
+
+$Z::usage = "$Z is a symbol reserved for Z spiders in the ZX-calculus. See also \[FormalCapitalZ]."
+
+$X::usage = "$X is a symbol reserved for X spider in the ZX-calculus. See also \[FormalCapitalX]."
+
+$H::usage = "$H is a symbol reserved for Hadamard gates in the ZX-calculus. See also \[FormalCapitalH]."
+
+$B::usage = "$B is a symbol reserved for diamonds in the ZX-calculus. See also \[FormalCapitalB]."
+
+Let[ZSpider, $Z, Global`Z];
+Let[XSpider, $X, Global`X];
+Let[ZXHadamard, $H, Global`H];
+Let[ZXDiamond, $B, Global`B];
+
 
 $i::usage = "$i is a symbol reserved for inputs in a ZX diagram."
 
 $o::usage = "$o is a symbol reserved for outputs in a ZX diagram."
 
-Let[ZSpider, $Z, Global`Z];
-Let[XSpider, $X, Global`X];
-Let[ZXDiamond, $B, Global`B];
-Let[ZXHadamard, $H, Global`H];
 Let[Species, $i, $o];
+
 
 SetAttributes[Evaluate @ Names["`*"], ReadProtected];
 
