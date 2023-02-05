@@ -1,5 +1,6 @@
 # MaZX
 
+MaZX is a Mathematica(R) package for the ZX-calculus.
 The ZX-calculus is a graphical language to describe linear maps on qubits.
 In several aspects, it goes beyond quantum circuit model.
 
