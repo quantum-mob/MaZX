@@ -1,5 +1,9 @@
 # Select Release Notes
 
+## v0.3.9
+
+- ZXForm has been enhanced.
+
 ## v0.3.8
 
 - A bug fix in ZXDiagram concerning spiders with multiple indices.
