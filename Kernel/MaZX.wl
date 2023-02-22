@@ -1,6 +1,6 @@
 (* -*- mode:math -*- *)
 Get["Q3`"];
-Q3Assert["2.9.9"];
+Q3Assert["2.10.3"];
 
 BeginPackage["MaZX`", {"Q3`"}]
 
@@ -9,8 +9,8 @@ ClearAll["`*"];
 
 `MaZX`$Version = StringJoin[
   "Solovay/", $Input, " v",
-  StringSplit["$Revision: 5.13 $"][[2]], " (",
-  StringSplit["$Date: 2023-02-05 19:11:53+09 $"][[2]], ") ",
+  StringSplit["$Revision: 5.14 $"][[2]], " (",
+  StringSplit["$Date: 2023-02-23 08:46:31+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 

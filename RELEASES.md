@@ -2,6 +2,10 @@
 
 ## v0.3.9
 
+- Maintenance update to be consistent with Q3 v2.10.3.
+
+## v0.3.9
+
 - ZXForm has been enhanced.
 
 ## v0.3.8

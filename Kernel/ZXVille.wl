@@ -3,8 +3,8 @@ BeginPackage["MaZX`", {"Q3`"}]
 
 `ZXVille`$Version = StringJoin[
   $Input, " v",
-  StringSplit["$Revision: 1.9 $"][[2]], " (",
-  StringSplit["$Date: 2023-02-05 19:07:25+09 $"][[2]], ") ",
+  StringSplit["$Revision: 1.10 $"][[2]], " (",
+  StringSplit["$Date: 2023-02-23 08:45:52+09 $"][[2]], ") ",
   "Mahn-Soo Choi"
  ];
 
@@ -123,7 +123,7 @@ zxcGate[ss_Association, t_Integer][CX[{a_?QubitQ} -> {1}, {b_?QubitQ}]] :=
     t }
 
 zxcGate[ss_Association, t_Integer] @
-  ControlledU[{c_?QubitQ} -> {v_}, Phase[phi_, q_?QubitQ], ___?OptionQ] :=
+  ControlledGate[{c_?QubitQ} -> {v_}, Phase[phi_, q_?QubitQ], ___?OptionQ] :=
   With[
     { p = ss @ FlavorMute[c],
       k = ss @ FlavorMute[q] },
@@ -144,7 +144,7 @@ zxcGate[ss_Association, t_Integer] @
           If[v == 0,{$X[p,t][Pi], $X[p,t+2][Pi]}, Nothing], 
           $B[p,t], $B[k,t] },
         t+3 },
-      _, zxcGate[ss, t][ControlledU[{c}->{1}, Phase[phi, q]]]
+      _, zxcGate[ss, t][ControlledGate[{c}->{1}, Phase[phi, q]]]
      ]
    ]
 
